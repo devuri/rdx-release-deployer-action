@@ -1,0 +1,21 @@
+{
+  "name": "rd-web-app-release-deployer-action",
+  "version": "0.1.0",
+  "description": "A placeholder package for CI",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"No tests specified\" && exit 0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/devuri/rd-web-app-release-deployer-action.git"
+  },
+  "keywords": [],
+  "author": "uriel",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/devuri/rd-web-app-release-deployer-action/issues"
+  },
+  "homepage": "https://github.com/devuri/rd-web-app-release-deployer-action#readme",
+  "dependencies": {}
+}
