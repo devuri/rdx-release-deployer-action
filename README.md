@@ -2,30 +2,30 @@
 
 ## Description
 
-The WebApp Release Deployer is a comprehensive GitHub Action designed to automate the deployment process of your web application. This action handles setting up the environment, installing dependencies, building the project, deploying to a remote server, and sending notifications to Slack.
+The WebApp Release Deployer is a GitHub Action designed to automate the deployment process of your web application. This action handles setting up the environment, installing dependencies, building the project, deploying to a remote server, and sending notifications to Slack.
 
 ## Inputs
 
 | Input            | Description                                               | Required | Default                                                                                                          |
 |------------------|-----------------------------------------------------------|----------|------------------------------------------------------------------------------------------------------------------|
-| `github-token`   | GitHub Token                                              | Yes      | N/A                                                                                                              |
-| `deploy-path`    | Remote deploy path                                        | Yes      | N/A                                                                                                              |
-| `deploy-host`    | Remote deploy host                                        | Yes      | N/A                                                                                                              |
-| `deploy-port`    | Remote deploy port                                        | Yes      | N/A                                                                                                              |
-| `deploy-user`    | Remote deploy user                                        | Yes      | N/A                                                                                                              |
-| `deploy-key`     | Remote deploy key                                         | Yes      | N/A                                                                                                              |
-| `path`           | Path to the build directory                               | Yes      | `build/trunk/`                                                                                                   |
-| `switches`       | Rsync switches for deployment                             | No       | `-avzr --delete --exclude="*.env" --exclude="env" --exclude=".github" --exclude=".git" --exclude=".gitignore" --exclude=".user.ini"` |
-| `slack-webhook`  | Slack webhook URL for notifications                       | No       | N/A                                                                                                              |
-| `slack-channel`  | Slack channel for notifications                           | No       | `general`                                                                                                        |
-| `slack-title`    | Slack notification title                                  | No       | `Web Application Deployed`                                                                                       |
-| `slack-message`  | Slack notification message                                | No       | `Deployment process completed. Check logs for details.`                                                          |
-| `slack-username` | Slack notification username                               | No       | `WebApp Deploy Bot`                                                                                              |
-| `slack-footer`   | Slack notification footer                                 | No       | `Web Application Update Status`                                                                                  |
+| `github-token`   | GitHub Token. This is provided automatically by GitHub. Use the default value `${{ secrets.GITHUB_TOKEN }}`. [More info](https://docs.github.com/en/actions/security-guides/automatic-token-authentication) | Yes      | N/A                                                                                                              |
+| `deploy-path`    | The path on the remote server where the application will be deployed.                      | Yes      | N/A                                                                                                              |
+| `deploy-host`    | The hostname or IP address of the remote server.                                         | Yes      | N/A                                                                                                              |
+| `deploy-port`    | The SSH port of the remote server (usually 22).                                              | Yes      | N/A                                                                                                              |
+| `deploy-user`    | The username for SSH access to the remote server.                                         | Yes      | N/A                                                                                                              |
+| `deploy-key`     | The private SSH key for accessing the remote server. [Generate an SSH key](https://docs.github.com/en/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) | Yes      | N/A                                                                                                              |
+| `path`           | The path to the build directory on the GitHub runner.                                      | Yes      | `build/trunk/`                                                                                                   |
+| `switches`       | Rsync switches for deployment. This controls the behavior of the file synchronization process. [Rsync documentation](https://linux.die.net/man/1/rsync) | No       | `-avzr --delete --exclude="*.env" --exclude="env" --exclude=".github" --exclude=".git" --exclude=".gitignore" --exclude=".user.ini"` |
+| `slack-webhook`  | Slack webhook URL for notifications. Obtain this from your Slack settings. [Creating Slack webhooks](https://slack.com/help/articles/115005265063-Incoming-webhooks-for-Slack)                  | No       | N/A                                                                                                              |
+| `slack-channel`  | Slack channel for notifications.                                                            | No       | `general`                                                                                                        |
+| `slack-title`    | Title for the Slack notification.                                                           | No       | `Web Application Deployed`                                                                                       |
+| `slack-message`  | Message body for the Slack notification.                                                    | No       | `Deployment process completed. Check logs for details.`                                                          |
+| `slack-username` | Username that will appear as the sender of the Slack notification.                         | No       | `WebApp Deploy Bot`                                                                                              |
+| `slack-footer`   | Footer text for the Slack notification.                                                     | No       | `Web Application Update Status`                                                                                  |
 
 ## Usage
 
-To use this action in your workflow, include the following step in your GitHub Actions workflow file:
+To use this action in your workflow, include the following steps in your GitHub Actions workflow file. If you're new to GitHub Actions, create a `.github/workflows` directory in the root of your repository, and add a YAML file (e.g., `release-deployer.yml`) with the following content:
 
 ### Example Workflow
 
@@ -69,6 +69,7 @@ jobs:
           slack-footer: "Web Application Update Status"
 ```
 
+In this example, the workflow triggers on closed pull requests and can also be manually triggered via the GitHub Actions tab. It uses the `google-github-actions/release-please-action` to manage releases and then runs the custom deployer action if releases are created.
 
 ## How It Works
 
@@ -91,13 +92,20 @@ jobs:
 
 | Secret             | Description                  |
 |--------------------|------------------------------|
-| `GITHUB_TOKEN`     | GitHub token for authentication |
+| `GITHUB_TOKEN`     | GitHub token for authentication (provided by default in GitHub Actions) |
 | `DEPLOY_PATH`      | Remote deploy path           |
 | `DEPLOY_HOST`      | Remote deploy host           |
 | `DEPLOY_PORT`      | Remote deploy port           |
 | `DEPLOY_USER`      | Remote deploy user           |
 | `DEPLOY_KEY`       | Remote deploy key            |
 | `SLACK_WEBHOOK`    | Slack webhook URL for notifications |
+
+To add secrets to your repository:
+1. Navigate to the repository on GitHub.
+2. Click on "Settings".
+3. Click on "Secrets" in the sidebar.
+4. Click on "New repository secret".
+5. Add each secret one by one.
 
 ## License
 
