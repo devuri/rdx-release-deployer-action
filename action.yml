@@ -1,6 +1,6 @@
 name: 'Release Deployer'
 description: 'A custom deployer action'
-author: 'Your Name'
+author: 'uriel'
 inputs:
   github-token:
     description: 'GitHub Token'
@@ -19,6 +19,9 @@ inputs:
     required: true
   deploy-key:
     description: 'Remote deploy key'
+    required: true
+  tag-name:
+    description: 'The release tag'
     required: true
   path:
     description: 'Path to the build directory'
@@ -113,7 +116,7 @@ runs:
       with:
         files: 'app.zip;CHANGELOG.md'
         repo-token: ${{ inputs.github-token }}
-        release-tag: ${{ steps.release.outputs.tag_name }}
+        release-tag: ${{ inputs.tag-name }}
 
     - name: Send Notification to Slack
       if: ${{ inputs.slack-webhook }}
@@ -123,7 +126,7 @@ runs:
         SLACK_ICON: https://user-images.githubusercontent.com/4777400/225331174-d5ae1c0e-5ec0-493b-aabc-91c4cc6a14c4.png
         SLACK_COLOR: ${{ job.status }}
         SLACK_TITLE: ${{ inputs.slack-title }}
-        SLACK_MESSAGE: ${{ inputs.slack-message }} Release tag: ${{ steps.release.outputs.tag_name }}.
+        SLACK_MESSAGE: ${{ inputs.slack-message }} Released.
         SLACK_USERNAME: ${{ inputs.slack-username }}
         SLACK_WEBHOOK: ${{ inputs.slack-webhook }}
         SLACK_FOOTER: ${{ inputs.slack-footer }}
