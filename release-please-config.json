@@ -3,7 +3,7 @@
     ".": {}
   },
   "plugins": [],
-  "release-type": "js",
+  "release-type": "javascript",
   "draft": false,
   "prerelease": true,
   "bump-minor-pre-major": true,
