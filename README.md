@@ -113,6 +113,20 @@ To add secrets to your repository:
 4. Click on "New repository secret".
 5. Add each secret one by one.
 
+## Why This Is Useful
+
+### Continuous Integration and Continuous Deployment (CI/CD)
+
+CI/CD is a method to frequently deliver apps to customers by introducing automation into the stages of app development. The main concepts attributed to CI/CD are continuous integration, continuous delivery, and continuous deployment. This action helps implement CI/CD by automating the deployment process, ensuring that your application is always in a deployable state and that updates are delivered to users quickly and efficiently.
+
+### Security
+
+- **Automated Environment Setup**: By automating the setup of the environment, this action reduces the risk of human error, which can introduce security vulnerabilities.
+- **Controlled Deployments**: The use of SSH keys and tokens ensures that only authorized personnel can deploy updates, maintaining the integrity and security of the application.
+- **Consistent Builds**: Automated builds and deployments ensure that the code running in production is consistent with the code in the repository, reducing the risk of inconsistencies that can lead to security issues.
+
+By incorporating this action into your workflow, you can achieve a more reliable and secure deployment process, improve your development workflow, and ensure that your applications are deployed consistently and quickly.
+
 ## License
 
 The scripts and documentation in this project are released under the [MIT License](LICENSE).
