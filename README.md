@@ -69,9 +69,8 @@ jobs:
           slack-footer: "Web Application Update Status"
 ```
 
-## Technical Details
 
-### How It Works
+## How It Works
 
 1. **Setup Environment**: The action sets up the necessary environment, including PHP and Node.js.
 2. **Install Dependencies**: It installs the required PHP and NPM dependencies.
