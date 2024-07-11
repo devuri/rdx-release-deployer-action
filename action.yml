@@ -1,1 +1,130 @@
-# action file
+name: 'Release Deployer'
+description: 'A custom deployer action'
+author: 'Your Name'
+inputs:
+  github-token:
+    description: 'GitHub Token'
+    required: true
+  deploy-path:
+    description: 'Remote deploy path'
+    required: true
+  deploy-host:
+    description: 'Remote deploy host'
+    required: true
+  deploy-port:
+    description: 'Remote deploy port'
+    required: true
+  deploy-user:
+    description: 'Remote deploy user'
+    required: true
+  deploy-key:
+    description: 'Remote deploy key'
+    required: true
+  path:
+    description: 'Path to the build directory'
+    required: true
+    default: 'build/trunk/'
+  switches:
+    description: 'Rsync switches for deployment'
+    required: false
+    default: '-avzr --delete --exclude="*.env" --exclude="env" --exclude=".github" --exclude=".git" --exclude=".gitignore" --exclude=".user.ini"'
+  slack-webhook:
+    description: 'Slack webhook URL for notifications'
+    required: false
+  slack-channel:
+    description: 'Slack channel for notifications'
+    required: false
+    default: 'general'
+  slack-title:
+    description: 'Slack notification title'
+    required: false
+    default: 'Web Application Deployed'
+  slack-message:
+    description: 'Slack notification message'
+    required: false
+    default: 'Deployment process completed. Check logs for details.'
+  slack-username:
+    description: 'Slack notification username'
+    required: false
+    default: 'WebApp Deploy Bot'
+  slack-footer:
+    description: 'Slack notification footer'
+    required: false
+    default: 'Web Application Update Status'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Setup PHP 7.4
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: "7.4"
+        extensions: pcov
+
+    - name: Install PHP dependencies
+      uses: ramsey/composer-install@v1
+      with:
+        composer-options: '-oa --no-dev'
+
+    - name: Install and Setup Node 16.x
+      uses: actions/setup-node@v3
+      with:
+        node-version: 16
+
+    - name: Install NPM dependencies
+      run: npm install
+
+    - name: Build The Artifact
+      run: npm run build
+
+    - name: Deployer
+      uses: burnett01/rsync-deployments@7.0.1
+      with:
+        switches: ${{ inputs.switches }}
+        path: ${{ inputs.path }}
+        remote_path: ${{ inputs.deploy-path }}
+        remote_host: ${{ inputs.deploy-host }}
+        remote_port: ${{ inputs.deploy-port }}
+        remote_user: ${{ inputs.deploy-user }}
+        remote_key: ${{ inputs.deploy-key }}
+
+    - name: Execute Remote SSH Updates
+      uses: appleboy/ssh-action@v0.1.10
+      with:
+        host: ${{ inputs.deploy-host }}
+        username: ${{ inputs.deploy-user }}
+        key: ${{ inputs.deploy-key }}
+        port: ${{ inputs.deploy-port }}
+        script: |
+          set -eo # Stop on error
+
+          WEB_APP_PATH=${{ inputs.deploy-path }}
+
+          echo "➤ Run Install for dependencies..."
+          cd $WEB_APP_PATH && composer install
+
+          echo "✓ Updates Completed!"
+
+    - name: Upload zip to release
+      uses: AButler/upload-release-assets@v2.0
+      with:
+        files: 'app.zip;CHANGELOG.md'
+        repo-token: ${{ inputs.github-token }}
+        release-tag: ${{ steps.release.outputs.tag_name }}
+
+    - name: Send Notification to Slack
+      if: ${{ inputs.slack-webhook }}
+      uses: rtCamp/action-slack-notify@v2
+      env:
+        SLACK_CHANNEL: ${{ inputs.slack-channel }}
+        SLACK_ICON: https://user-images.githubusercontent.com/4777400/225331174-d5ae1c0e-5ec0-493b-aabc-91c4cc6a14c4.png
+        SLACK_COLOR: ${{ job.status }}
+        SLACK_TITLE: ${{ inputs.slack-title }}
+        SLACK_MESSAGE: ${{ inputs.slack-message }} Release tag: ${{ steps.release.outputs.tag_name }}.
+        SLACK_USERNAME: ${{ inputs.slack-username }}
+        SLACK_WEBHOOK: ${{ inputs.slack-webhook }}
+        SLACK_FOOTER: ${{ inputs.slack-footer }}
+        MSG_MINIMAL: true
