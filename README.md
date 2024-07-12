@@ -77,7 +77,7 @@ In this example, the workflow triggers on closed pull requests and can also be m
 
 1. **Build Directory**: The `path` input (default `build/trunk/`) specifies the directory from which files will be copied to the remote server using `rsync`. Ensure that your build process outputs the necessary files to this directory, or adjust the `path` input accordingly to match your build output location.
 
-2. **Rsync `--delete` Option**: The `--delete` option in the `switches` input is used to keep the remote directory in sync with the local build directory by deleting files on the remote server that no longer exist locally. This can be dangerous as it may result in the deletion of important files or content on the server, such as user-uploaded images or other assets. Use this option with caution to avoid unintended data loss. Consider excluding directories that should not be deleted by adding them to the `--exclude` list in the `switches` input.
+2. **Rsync `--delete` Option**: The `--delete` option in the `switches` input is used to keep the remote directory in sync with the local build directory by deleting files on the remote server that no longer exist locally. This can be dangerous as it may result in the deletion of important files or content on the server, such as user-uploaded images or other assets. Use this option with caution to avoid unintended data loss. Consider excluding directories that should not be deleted by adding them to the `--exclude` list in the `switches` input. see:https://superuser.com/questions/156664/what-are-the-differences-between-the-rsync-delete-options
 
 ## How It Works
 
