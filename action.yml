@@ -79,9 +79,11 @@ runs:
 
     - name: Install NPM dependencies
       run: npm install
+      shell: bash
 
     - name: Build The Artifact
       run: npm run build
+      shell: bash
 
     - name: Deployer
       uses: burnett01/rsync-deployments@7.0.1
