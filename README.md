@@ -62,7 +62,7 @@ jobs:
           deploy-key: ${{ secrets.DEPLOY_KEY }}
           path: build/trunk/
           tag-name: ${{ steps.release.outputs.tag_name }}
-          switches: '-avzr --delete --exclude="*.env" --exclude="env" --exclude=".github" --exclude=".git" --exclude=".gitignore" --exclude=".user.ini"'
+          switches: '-avzr --exclude="*.env" --exclude="env" --exclude=".github" --exclude=".git" --exclude=".gitignore" --exclude=".user.ini"'
           slack-webhook: ${{ secrets.SLACK_WEBHOOK }}
           slack-channel: general
           slack-title: "Web Application Deployed"
