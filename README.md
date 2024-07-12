@@ -119,7 +119,7 @@ To add secrets to your repository:
 
 ### Continuous Integration and Continuous Deployment (CI/CD)
 
-CI/CD is a method to frequently deliver apps to customers by introducing automation into the stages of app development. The main concepts attributed to CI/CD are continuous integration, continuous delivery, and continuous deployment. This action helps implement CI/CD by [automating the deployment process](#12), ensuring that your application is always in a deployable state and that updates are delivered to users quickly and efficiently.
+CI/CD is a method to frequently deliver apps to customers by introducing automation into the stages of app development. The main concepts attributed to CI/CD are continuous integration, continuous delivery, and continuous deployment. This action helps implement CI/CD by automating the deployment process ([#12](https://github.com/devuri/rd-web-app-release-deployer-action/issues/12)), ensuring that your application is always in a deployable state and that updates are delivered to users quickly and efficiently.
 
 ### Security
 
