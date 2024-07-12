@@ -110,7 +110,7 @@ runs:
           cd $WEB_APP_PATH && composer install
 
           echo "✓ Updates Completed!"
-    shell: bash
+        shell: bash
 
     - name: Upload zip to release
       uses: AButler/upload-release-assets@v2.0
