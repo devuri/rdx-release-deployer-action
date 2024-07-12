@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.1.4](https://github.com/devuri/rd-web-app-release-deployer-action/compare/rd-web-app-release-deployer-action-v0.1.3...rd-web-app-release-deployer-action-v0.1.4) (2024-07-12)
+
+
+### Bug Fixes
+
+* add tag name to readme ([43e5fb3](https://github.com/devuri/rd-web-app-release-deployer-action/commit/43e5fb3593f7bdacc681ccbf3c738cd1a41859be))
+* do not use `--delete` NOT RECOMMENDED ([2ac10ec](https://github.com/devuri/rd-web-app-release-deployer-action/commit/2ac10ec8e05f85eeb943526b89c19ebec38802b7))
+* remove `--delete` ([0a0584a](https://github.com/devuri/rd-web-app-release-deployer-action/commit/0a0584ac35c4925507a52ddafdd16e7056b7f3cc))
+
 ## [0.1.3](https://github.com/devuri/rd-web-app-release-deployer-action/compare/rd-web-app-release-deployer-action-v0.1.2...rd-web-app-release-deployer-action-v0.1.3) (2024-07-12)
 
 
