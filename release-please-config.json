@@ -3,7 +3,6 @@
     ".": {}
   },
   "plugins": [],
-  "release-as": "0.2.1",
   "release-type": "simple",
   "draft": false,
   "prerelease": false,
