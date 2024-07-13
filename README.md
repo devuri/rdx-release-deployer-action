@@ -1,8 +1,8 @@
-# WebApp Release Deployer
+# Release Deployer
 
 ## Description
 
-The WebApp Release Deployer is a GitHub Action designed to automate the deployment process of your web application. This action handles setting up the environment, installing dependencies, building the project, deploying to a remote server, and sending notifications to Slack.
+The Release Deployer workflow action is an Automated Release Deployment for Continuous Integration / Continuous Deployment (CI/CD). It designed to automate the deployment process of your web -*application. This action handles setting up the environment, installing dependencies, building the project (the build package), and deploying it to a remote server, and sending notifications to Slack.
 
 ## Inputs
 

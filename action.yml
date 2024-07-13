@@ -1,5 +1,5 @@
 name: 'Release Deployer'
-description: 'A custom deployer action'
+description: 'Automated release deployer workflow action'
 author: 'uriel'
 inputs:
   github-token:
