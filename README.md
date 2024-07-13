@@ -40,6 +40,8 @@ To use this action in your workflow, include the following steps in your GitHub 
 
 ### Example Workflow
 
+Here is the updated example with comments for each possible parameter:
+
 ```yaml
 name: 🚀 Release Deployer
 on:
@@ -64,30 +66,46 @@ jobs:
         if: ${{ steps.release.outputs.releases_created }}
         uses: devuri/rdx-release-deployer-action@v1
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          deploy-path: ${{ secrets.DEPLOY_PATH }}
-          deploy-host: ${{ secrets.DEPLOY_HOST }}
-          deploy-port: ${{ secrets.DEPLOY_PORT }}
-          deploy-user: ${{ secrets.DEPLOY_USER }}
-          deploy-key: ${{ secrets.DEPLOY_KEY }}
-          path: build/trunk/
-          tag-name: ${{ steps.release.outputs.tag_name }}
-          switches: '-avzr --exclude="*.env" --exclude="env" --exclude=".github" --exclude=".git" --exclude=".gitignore" --exclude=".user.ini"'
-          slack-webhook: ${{ secrets.SLACK_WEBHOOK }}
-          slack-channel: general
-          slack-title: "Web Application Deployed"
-          slack-message: "Deployment process completed."
-          slack-username: "WebApp Deploy Bot"
-          slack-footer: "Web Application Update Status"
-          php-version: '7.4'
-          php-extensions: 'pcov'
-          node-version: '16'
-          use-php: true
-          use-node: true
-          use-ssh-updates: true
-          upload-release-assets: true
-          release-files: 'build.zip;CHANGELOG.md'
+          # Required parameters
+          github-token: ${{ secrets.GITHUB_TOKEN }}         # GitHub Token
+          deploy-path: ${{ secrets.DEPLOY_PATH }}           # Remote deploy path
+          deploy-host: ${{ secrets.DEPLOY_HOST }}           # Remote deploy host
+          deploy-port: ${{ secrets.DEPLOY_PORT }}           # Remote deploy port
+          deploy-user: ${{ secrets.DEPLOY_USER }}           # Remote deploy user
+          deploy-key: ${{ secrets.DEPLOY_KEY }}             # Remote deploy key
+          tag-name: ${{ steps.release.outputs.tag_name }}   # Release tag name
+
+          # Optional parameters with defaults
+          path: build/trunk/                                # Path to the build directory on the GitHub runner (default: build/trunk/)
+          switches: '-avzr --exclude="*.env" --exclude="env" --exclude=".github" --exclude=".git" --exclude=".gitignore" --exclude=".user.ini"' # Rsync switches for deployment (default: '-avzr --delete --exclude="*.env" --exclude="env" --exclude=".github" --exclude=".git" --exclude=".gitignore" --exclude=".user.ini"')
+          slack-webhook: ${{ secrets.SLACK_WEBHOOK }}       # Slack webhook URL for notifications
+          slack-channel: general                            # Slack channel for notifications (default: general)
+          slack-title: "Web Application Deployed"           # Title for the Slack notification (default: "Web Application Deployed")
+          slack-message: "Deployment process completed."    # Message body for the Slack notification (default: "Deployment process completed. Check logs for details.")
+          slack-username: "WebApp Deploy Bot"               # Username that will appear as the sender of the Slack notification (default: "WebApp Deploy Bot")
+          slack-footer: "Web Application Update Status"     # Footer text for the Slack notification (default: "Web Application Update Status")
+
+          # Optional parameters without defaults
+          php-version: '7.4'                                # PHP version to setup (default: '7.4')
+          php-extensions: 'pcov'                            # PHP extensions to install (default: 'pcov')
+          node-version: '16'                                # Node.js version to setup (default: '16')
+
+          # Boolean flags
+          use-php: true                                     # Whether to setup PHP (default: true)
+          use-node: true                                    # Whether to setup Node.js (default: true)
+          use-ssh-updates: true                             # Whether to execute remote SSH updates (default: true)
+          upload-release-assets: true                       # Whether to upload release assets (default: true)
+
+          # Files to upload to release
+          release-files: 'build.zip;CHANGELOG.md'           # Files to upload to release (default: 'build.zip;CHANGELOG.md')
 ```
+
+### Explanation
+- **Required Parameters**: These are essential for the action to run and have no default values.
+- **Optional Parameters with Defaults**: These parameters have default values and can be overridden.
+- **Optional Parameters without Defaults**: These parameters do not have default values specified in the workflow.
+- **Boolean Flags**: These control whether specific steps in the workflow are executed.
+- **Files to Upload to Release**: Specifies the files to be uploaded as release assets.
 
 In this example, the workflow triggers on closed pull requests and can also be manually triggered via the GitHub Actions tab. It uses the `google-github-actions/release-please-action` to manage releases and then runs the custom deployer action if releases are created.
 
