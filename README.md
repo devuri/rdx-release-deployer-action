@@ -55,7 +55,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Run release-please
-        uses: google-github-actions/release-please-action@v3
+        uses: googleapis/release-please-action@v4
         id: release
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -67,6 +67,7 @@ jobs:
         uses: devuri/rdx-release-deployer-action@v1
         with:
           # Required parameters
+          site-url: ${{ secrets.SITE_URL }}                 # Deployment site URL
           github-token: ${{ secrets.GITHUB_TOKEN }}         # GitHub Token
           deploy-path: ${{ secrets.DEPLOY_PATH }}           # Remote deploy path
           deploy-host: ${{ secrets.DEPLOY_HOST }}           # Remote deploy host
@@ -98,6 +99,7 @@ jobs:
 
           # Files to upload to release
           release-files: 'build.zip;CHANGELOG.md'           # Files to upload to release (default: 'build.zip;CHANGELOG.md')
+
 ```
 
 ### Explanation
@@ -107,7 +109,7 @@ jobs:
 - **Boolean Flags**: These control whether specific steps in the workflow are executed.
 - **Files to Upload to Release**: Specifies the files to be uploaded as release assets.
 
-In this example, the workflow triggers on closed pull requests and can also be manually triggered via the GitHub Actions tab. It uses the `google-github-actions/release-please-action` to manage releases and then runs the custom deployer action if releases are created.
+In this example, the workflow triggers on closed pull requests and can also be manually triggered via the GitHub Actions tab. It uses the `googleapis/release-please-action` to [manage releases](https://github.com/googleapis/release-please-action) and then runs the custom deployer action if releases are created.
 
 ## Important Note
 
