@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.1](https://github.com/devuri/rdx-release-deployer-action/compare/v0.1.8...v0.2.1) (2024-07-13)
+
+
+### Bug Fixes
+
+* update release ([a05982f](https://github.com/devuri/rdx-release-deployer-action/commit/a05982f1f0ff66acb696f543ee6f6e54500f995d))
+
 ## [0.1.8](https://github.com/devuri/rdx-release-deployer-action/compare/v0.1.7...v0.1.8) (2024-07-13)
 
 
