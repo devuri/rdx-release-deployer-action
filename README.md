@@ -40,7 +40,7 @@ To use this action in your workflow, include the following steps in your GitHub 
 
 ### Example Workflow
 
-Here is the updated example with comments for each possible parameter:
+Example with comments for each parameter:
 
 ```yaml
 name: 🚀 Release Deployer
