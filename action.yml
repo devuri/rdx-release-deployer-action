@@ -108,7 +108,7 @@ runs:
 
           WEB_APP_PATH=${{ inputs.deploy-path }}
 
-          echo "➤ Run Install for dependencies..."
+          echo "➤ Run Composer Install for dependencies..."
           cd $WEB_APP_PATH && composer install
 
           echo "✓ Updates Completed!"
