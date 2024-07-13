@@ -196,6 +196,7 @@ runs:
     - name: Skip SSH Updates
       if: ${{ inputs.use-php != 'true' || inputs.use-ssh-updates != 'true' }}
       run: echo "Skipping SSH updates as use-php is set to false or use-ssh-updates is set to false."
+      shell: bash
 
     - name: Upload Release Assets
       if: ${{ inputs.upload-release-assets == 'true' }}
@@ -208,6 +209,7 @@ runs:
     - name: Skip Upload Release Assets
       if: ${{ inputs.upload-release-assets != 'true' }}
       run: echo "Skipping upload of release assets as upload-release-assets is set to false."
+      shell: bash
 
     - name: Send Notification to Slack
       if: ${{ inputs.slack-webhook }}
