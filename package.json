@@ -1,6 +1,6 @@
 {
   "name": "rdx-release-deployer-action",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "A placeholder package for CI",
   "main": "index.js",
   "scripts": {
