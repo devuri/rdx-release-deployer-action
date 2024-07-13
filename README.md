@@ -32,7 +32,7 @@ The Release Deployer workflow action is an Automated Release Deployment for Cont
 | use-ssh-updates       | Whether to execute remote SSH updates                                                                                | No       | true                                                                                                                               |
 | upload-release-assets | Whether to upload release assets                                                                                     | No       | true                                                                                                                               |
 | release-files         | Files to upload to release                                                                                           | No       | build.zip;CHANGELOG.md                        |
-                                
+| use-cache             | This input parameter determines whether to use caching for dependencies. It defaults to false.                       | No       | false                                         |                             
 
 ## Usage
 
