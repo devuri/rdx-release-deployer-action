@@ -2,6 +2,9 @@ name: 'Release Deployer'
 description: 'Automated release deployer workflow action'
 author: 'uriel'
 inputs:
+  site-url:
+    description: 'The Deployment site URL'
+    required: true
   github-token:
     description: 'GitHub Token'
     required: true
@@ -30,7 +33,7 @@ inputs:
   switches:
     description: 'Rsync switches for deployment'
     required: false
-    default: '-avzr --delete --exclude="*.env" --exclude="env" --exclude=".github" --exclude=".git" --exclude=".gitignore" --exclude=".user.ini"'
+    default: '-avzr --exclude="*.env" --exclude="env" --exclude=".github" --exclude=".git" --exclude=".gitignore" --exclude=".user.ini"'
   slack-webhook:
     description: 'Slack webhook URL for notifications'
     required: false
@@ -54,6 +57,38 @@ inputs:
     description: 'Slack notification footer'
     required: false
     default: 'Web Application Update Status'
+  php-version:
+    description: 'PHP version to setup'
+    required: false
+    default: '7.4'
+  php-extensions:
+    description: 'PHP extensions to install'
+    required: false
+    default: 'pcov'
+  node-version:
+    description: 'Node.js version to setup'
+    required: false
+    default: '16'
+  use-php:
+    description: 'Whether to setup PHP'
+    required: false
+    default: true
+  use-node:
+    description: 'Whether to setup Node.js'
+    required: false
+    default: true
+  use-ssh-updates:
+    description: 'Whether to execute remote SSH updates'
+    required: false
+    default: true
+  upload-release-assets:
+    description: 'Whether to upload release assets'
+    required: false
+    default: true
+  release-files:
+    description: 'Files to upload to release'
+    required: false
+    default: 'build.zip;CHANGELOG.md'
 
 runs:
   using: 'composite'
@@ -61,28 +96,69 @@ runs:
     - name: Checkout
       uses: actions/checkout@v3
 
-    - name: Setup PHP 7.4
+    - name: Setup PHP
+      if: ${{ inputs.use-php == 'true' }}
       uses: shivammathur/setup-php@v2
       with:
-        php-version: "7.4"
-        extensions: pcov
+        php-version: ${{ inputs.php-version }}
+        extensions: ${{ inputs.php-extensions }}
+
+    - name: Skip PHP Setup
+      if: ${{ inputs.use-php != 'true' }}
+      run: echo "Skipping PHP setup as use-php is set to false."
 
     - name: Install PHP dependencies
+      if: ${{ inputs.use-php == 'true' }}
       uses: ramsey/composer-install@v1
       with:
         composer-options: '-oa --no-dev'
 
-    - name: Install and Setup Node 16.x
+    - name: Setup Node
+      if: ${{ inputs.use-node == 'true' }}
       uses: actions/setup-node@v3
       with:
-        node-version: 16
+        node-version: ${{ inputs.node-version }}
+
+    - name: Skip Node Setup
+      if: ${{ inputs.use-node != 'true' }}
+      run: echo "Skipping Node setup as use-node is set to false."
 
     - name: Install NPM dependencies
+      if: ${{ inputs.use-node == 'true' }}
       run: npm install
       shell: bash
 
     - name: Build The Artifact
+      if: ${{ inputs.use-node == 'true' }}
       run: npm run build
+      shell: bash
+
+    - name: Show Setup Configuration
+      run: |
+        echo "Deployment Setup Configuration:"
+        echo "Site URL: ${{ inputs['site-url'] }}"
+        echo "Deploy Path: ${{ inputs['deploy-path'] }}"
+        echo "Deploy Host: ${{ inputs['deploy-host'] }}"
+        echo "Deploy Port: ${{ inputs['deploy-port'] }}"
+        echo "Deploy User: ${{ inputs['deploy-user'] }}"
+        echo "Use PHP: ${{ inputs['use-php'] }}"
+        if [ "${{ inputs.use-php }}" = "true" ]; then
+          echo "PHP Version: ${{ inputs['php-version'] }}"
+          echo "PHP Extensions: ${{ inputs['php-extensions'] }}"
+        fi
+        echo "Use Node: ${{ inputs['use-node'] }}"
+        if [ "${{ inputs.use-node }}" = "true" ]; then
+          echo "Node Version: ${{ inputs['node-version'] }}"
+        fi
+        echo "Rsync Switches: ${{ inputs['switches'] }}"
+        echo "Slack Webhook: ${{ inputs['slack-webhook'] }}"
+        echo "Slack Channel: ${{ inputs['slack-channel'] }}"
+        echo "Slack Title: ${{ inputs['slack-title'] }}"
+        echo "Slack Message: ${{ inputs['slack-message'] }}"
+        echo "Slack Username: ${{ inputs['slack-username'] }}"
+        echo "Slack Footer: ${{ inputs['slack-footer'] }}"
+        echo "Upload Release Assets: ${{ inputs['upload-release-assets'] }}"
+        echo "Release Files: ${{ inputs['release-files'] }}"
       shell: bash
 
     - name: Deployer
@@ -97,6 +173,7 @@ runs:
         remote_key: ${{ inputs.deploy-key }}
 
     - name: Execute Remote SSH Updates
+      if: ${{ inputs.use-php == 'true' && inputs.use-ssh-updates == 'true' }}
       uses: appleboy/ssh-action@v0.1.10
       with:
         host: ${{ inputs.deploy-host }}
@@ -114,12 +191,21 @@ runs:
           echo "✓ Updates Completed!"
         shell: bash
 
-    - name: Upload zip to release
+    - name: Skip SSH Updates
+      if: ${{ inputs.use-php != 'true' || inputs.use-ssh-updates != 'true' }}
+      run: echo "Skipping SSH updates as use-php is set to false or use-ssh-updates is set to false."
+
+    - name: Upload Release Assets
+      if: ${{ inputs.upload-release-assets == 'true' }}
       uses: AButler/upload-release-assets@v2.0
       with:
-        files: 'app.zip;CHANGELOG.md'
+        files: ${{ inputs.release-files }}
         repo-token: ${{ inputs.github-token }}
         release-tag: ${{ inputs.tag-name }}
+
+    - name: Skip Upload Release Assets
+      if: ${{ inputs.upload-release-assets != 'true' }}
+      run: echo "Skipping upload of release assets as upload-release-assets is set to false."
 
     - name: Send Notification to Slack
       if: ${{ inputs.slack-webhook }}
