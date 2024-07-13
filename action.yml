@@ -89,6 +89,10 @@ inputs:
     description: 'Files to upload to release'
     required: false
     default: 'build.zip;CHANGELOG.md'
+  use-cache:
+    description: 'Whether to use caching for dependencies'
+    required: false
+    default: false
 
 runs:
   using: 'composite'
@@ -97,7 +101,7 @@ runs:
       uses: actions/checkout@v3
 
     - name: Cache PHP Dependencies
-      if: ${{ inputs.use-php == 'true' }}
+      if: ${{ inputs.use-php == 'true' && inputs.use-cache == 'true' }}
       uses: actions/cache@v3
       with:
         path: vendor
@@ -124,7 +128,7 @@ runs:
         composer-options: '-oa --no-dev'
 
     - name: Cache Node.js Dependencies
-      if: ${{ inputs.use-node == 'true' }}
+      if: ${{ inputs.use-node == 'true' && inputs.use-cache == 'true' }}
       uses: actions/cache@v3
       with:
         path: ~/.npm
@@ -179,6 +183,7 @@ runs:
         echo "Slack Footer: ${{ inputs['slack-footer'] }}"
         echo "Upload Release Assets: ${{ inputs['upload-release-assets'] }}"
         echo "Release Files: ${{ inputs['release-files'] }}"
+        echo "Use Cache: ${{ inputs['use-cache'] }}"
       shell: bash
 
     - name: Deployer
