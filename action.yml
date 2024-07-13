@@ -96,6 +96,15 @@ runs:
     - name: Checkout
       uses: actions/checkout@v3
 
+    - name: Cache PHP Dependencies
+      if: ${{ inputs.use-php == 'true' }}
+      uses: actions/cache@v3
+      with:
+        path: vendor
+        key: ${{ runner.os }}-php-${{ inputs.php-version }}-composer-${{ hashFiles('**/composer.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-php-${{ inputs.php-version }}-composer-
+
     - name: Setup PHP
       if: ${{ inputs.use-php == 'true' }}
       uses: shivammathur/setup-php@v2
@@ -113,6 +122,15 @@ runs:
       uses: ramsey/composer-install@v1
       with:
         composer-options: '-oa --no-dev'
+
+    - name: Cache Node.js Dependencies
+      if: ${{ inputs.use-node == 'true' }}
+      uses: actions/cache@v3
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-node-${{ inputs.node-version }}-npm-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-${{ inputs.node-version }}-npm-
 
     - name: Setup Node
       if: ${{ inputs.use-node == 'true' }}
