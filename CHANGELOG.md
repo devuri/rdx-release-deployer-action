@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.1.6](https://github.com/devuri/rdx-release-deployer-action/compare/rdx-release-deployer-action-v0.1.5...rdx-release-deployer-action-v0.1.6) (2024-07-13)
+
+
+### Features
+
+* updates optionals for more flexibility ([3415b08](https://github.com/devuri/rdx-release-deployer-action/commit/3415b08f8933719ee8c0a98ed31bafc1669063de))
+
+
+### Bug Fixes
+
+* minor fix update action.yml ([fb256b1](https://github.com/devuri/rdx-release-deployer-action/commit/fb256b1de0ca10611d250fba6f858217e132d5c8))
+* removes `--delete` too dangerous to be the default value Update action.yml ([8a36d58](https://github.com/devuri/rdx-release-deployer-action/commit/8a36d58b0b035f49569e13a5db617b4c37e51c82))
+* table structure in updated README.md ([d6bdc51](https://github.com/devuri/rdx-release-deployer-action/commit/d6bdc51effa7c6c8b2f5829cec3e5a97f8538d62))
+* Update README.md examples ([75fc6be](https://github.com/devuri/rdx-release-deployer-action/commit/75fc6be29ebe34632fc2a495c9703fd309c2f3ee))
+
 ## [0.1.5](https://github.com/devuri/rd-release-deployer-action/compare/rdx-release-deployer-action-v0.1.4...rdx-release-deployer-action-v0.1.5) (2024-07-13)
 
 
