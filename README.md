@@ -85,7 +85,7 @@ jobs:
           slack-username: "WebApp Deploy Bot"               # Username that will appear as the sender of the Slack notification (default: "WebApp Deploy Bot")
           slack-footer: "Web Application Update Status"     # Footer text for the Slack notification (default: "Web Application Update Status")
 
-          # Optional parameters without defaults
+          # Optional setup parameters with defaults
           php-version: '7.4'                                # PHP version to setup (default: '7.4')
           php-extensions: 'pcov'                            # PHP extensions to install (default: 'pcov')
           node-version: '16'                                # Node.js version to setup (default: '16')
