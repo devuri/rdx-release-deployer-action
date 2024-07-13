@@ -31,5 +31,4 @@ jobs:
           tag-name: ${{ steps.release.outputs.tag_name }}   # Release tag name
 
           path: build/trunk/                                # Path to the build directory on the GitHub runner (default: build/trunk/)
-          switches: '-avzr --exclude="*.env" --exclude="env" --exclude=".github" --exclude=".git" --exclude=".gitignore" --exclude=".user.ini"' # Rsync switches for deployment (default)
           slack-webhook: ${{ secrets.SLACK_WEBHOOK }}       # Slack webhook URL for notifications
