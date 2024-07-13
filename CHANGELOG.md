@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.7](https://github.com/devuri/rdx-release-deployer-action/compare/rdx-release-deployer-action-v0.1.6...rdx-release-deployer-action-v0.1.7) (2024-07-13)
+
+
+### Bug Fixes
+
+* Update action.yml ([915fe3b](https://github.com/devuri/rdx-release-deployer-action/commit/915fe3bb1b12490d02c922286458e9377a0ce455))
+
 ## [0.1.6](https://github.com/devuri/rdx-release-deployer-action/compare/rdx-release-deployer-action-v0.1.5...rdx-release-deployer-action-v0.1.6) (2024-07-13)
 
 
