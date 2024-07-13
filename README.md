@@ -1,8 +1,8 @@
-# WebApp Release Deployer
+# Release Deployer
 
 ## Description
 
-The WebApp Release Deployer is a GitHub Action designed to automate the deployment process of your web application. This action handles setting up the environment, installing dependencies, building the project, deploying to a remote server, and sending notifications to Slack.
+The Release Deployer workflow action is an Automated Release Deployment for Continuous Integration / Continuous Deployment (CI/CD). It designed to automate the deployment process of your web -*application. This action handles setting up the environment, installing dependencies, building the project (the build package), and deploying it to a remote server, and sending notifications to Slack.
 
 ## Inputs
 
@@ -77,7 +77,7 @@ In this example, the workflow triggers on closed pull requests and can also be m
 
 1. **Build Directory**: The `path` input (default `build/trunk/`) specifies the directory from which files will be copied to the remote server using `rsync`. Ensure that your build process outputs the necessary files to this directory, or adjust the `path` input accordingly to match your build output location.
 
-2. **Rsync `--delete` Option**: The `--delete` option in the `switches` input is used to keep the remote directory in sync with the local build directory by deleting files on the remote server that no longer exist locally. This can be dangerous as it may result in the deletion of important files or content on the server, such as user-uploaded images or other assets. Use this option with caution to avoid unintended data loss. Consider excluding directories that should not be deleted by adding them to the `--exclude` list in the `switches` input.
+2. **Rsync `--delete` Option**: The `--delete` option in the `switches` input is used to keep the remote directory in sync with the local build directory by deleting files on the remote server that no longer exist locally. This can be dangerous as it may result in the deletion of important files or content on the server, such as user-uploaded images or other assets. Use this option with caution to avoid unintended data loss. Consider excluding directories that should not be deleted by adding them to the `--exclude` list in the `switches` input. see:https://superuser.com/questions/156664/what-are-the-differences-between-the-rsync-delete-options
 
 ## How It Works
 
@@ -119,7 +119,7 @@ To add secrets to your repository:
 
 ### Continuous Integration and Continuous Deployment (CI/CD)
 
-CI/CD is a method to frequently deliver apps to customers by introducing automation into the stages of app development. The main concepts attributed to CI/CD are continuous integration, continuous delivery, and continuous deployment. This action helps implement CI/CD by automating the deployment process, ensuring that your application is always in a deployable state and that updates are delivered to users quickly and efficiently.
+CI/CD is a method to frequently deliver apps to customers by introducing automation into the stages of app development. The main concepts attributed to CI/CD are continuous integration, continuous delivery, and continuous deployment. This action helps implement CI/CD by automating the deployment process ([#12](https://github.com/devuri/rd-web-app-release-deployer-action/issues/12)), ensuring that your application is always in a deployable state and that updates are delivered to users quickly and efficiently.
 
 ### Security
 

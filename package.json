@@ -1,6 +1,6 @@
 {
-  "name": "rd-web-app-release-deployer-action",
-  "version": "0.1.4",
+  "name": "rdx-release-deployer-action",
+  "version": "0.1.5",
   "description": "A placeholder package for CI",
   "main": "index.js",
   "scripts": {
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/devuri/rd-web-app-release-deployer-action.git"
+    "url": "git+https://github.com/devuri/rd-release-deployer-action.git"
   },
   "keywords": [],
   "author": "uriel",
