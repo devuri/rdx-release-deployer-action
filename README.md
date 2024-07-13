@@ -2,27 +2,38 @@
 
 ## Description
 
-The Release Deployer workflow action is an Automated Release Deployment for Continuous Integration / Continuous Deployment (CI/CD). It designed to automate the deployment process of your web -*application. This action handles setting up the environment, installing dependencies, building the project (the build package), and deploying it to a remote server, and sending notifications to Slack.
+The Release Deployer workflow action is an Automated Release Deployment for Continuous Integration / Continuous Deployment (CI/CD). It is designed to automate the deployment process of your web application. This action handles setting up the environment, installing dependencies, building the project (the build package), deploying it to a remote server, and sending notifications to Slack.
 
 ## Inputs
 
-| Input            | Description                                               | Required | Default                                                                                                          |
-|------------------|-----------------------------------------------------------|----------|------------------------------------------------------------------------------------------------------------------|
-| `github-token`   | GitHub Token. This is provided automatically by GitHub. Use the default value `${{ secrets.GITHUB_TOKEN }}`. [More info](https://docs.github.com/en/actions/security-guides/automatic-token-authentication) | Yes      | N/A                                                                                                              |
-| `deploy-path`    | The path on the remote server where the application will be deployed.                      | Yes      | N/A                                                                                                              |
-| `deploy-host`    | The hostname or IP address of the remote server.                                         | Yes      | N/A                                                                                                              |
-| `deploy-port`    | The SSH port of the remote server (usually 22).                                              | Yes      | N/A                                                                                                              |
-| `deploy-user`    | The username for SSH access to the remote server.                                         | Yes      | N/A                                                                                                              |
-| `deploy-key`     | The private SSH key for accessing the remote server. [Generate an SSH key](https://docs.github.com/en/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) | Yes      | N/A                                                                                                              |
-| `path`           | The path to the build directory on the GitHub runner.                                      | Yes      | `build/trunk/`                                                                                                   |
-| `tag-name`           | The tag name from release build.                                      | Yes      | N/A                                                                                                  |
-| `switches`       | Rsync switches for deployment. This controls the behavior of the file synchronization process. [Rsync documentation](https://linux.die.net/man/1/rsync) | No       | `-avzr --delete --exclude="*.env" --exclude="env" --exclude=".github" --exclude=".git" --exclude=".gitignore" --exclude=".user.ini"` |
-| `slack-webhook`  | Slack webhook URL for notifications. Obtain this from your Slack settings. [Creating Slack webhooks](https://slack.com/help/articles/115005265063-Incoming-webhooks-for-Slack)                  | No       | N/A                                                                                                              |
-| `slack-channel`  | Slack channel for notifications.                                                            | No       | `general`                                                                                                        |
-| `slack-title`    | Title for the Slack notification.                                                           | No       | `Web Application Deployed`                                                                                       |
-| `slack-message`  | Message body for the Slack notification.                                                    | No       | `Deployment process completed. Check logs for details.`                                                          |
-| `slack-username` | Username that will appear as the sender of the Slack notification.                         | No       | `WebApp Deploy Bot`                                                                                              |
-| `slack-footer`   | Footer text for the Slack notification.                                                     | No       | `Web Application Update Status`                                                                                  |
+| Input                 | Description                                                                                                              | Required | Default                                                                                                          |
+|-----------------------|--------------------------------------------------------------------------------------------------------------------------|----------|------------------------------------------------------------------------------------------------------------------|
+| `site-url`            | The Deployment site URL                                                                                                  | Yes      | N/A                                                                                                              |
+| `github-token`        | GitHub Token. This is
+
+ provided automatically by GitHub. Use the default value `${{ secrets.GITHUB_TOKEN }}`. [More info](https://docs.github.com/en/actions/security-guides/automatic-token-authentication) | Yes      | N/A                                                                                                              |
+| `deploy-path`         | The path on the remote server where the application will be deployed.                                                    | Yes      | N/A                                                                                                              |
+| `deploy-host`         | The hostname or IP address of the remote server.                                                                         | Yes      | N/A                                                                                                              |
+| `deploy-port`         | The SSH port of the remote server (usually 22).                                                                          | Yes      | N/A                                                                                                              |
+| `deploy-user`         | The username for SSH access to the remote server.                                                                        | Yes      | N/A                                                                                                              |
+| `deploy-key`          | The private SSH key for accessing the remote server. [Generate an SSH key](https://docs.github.com/en/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) | Yes      | N/A                                                                                                              |
+| `tag-name`            | The tag name from release build.                                                                                         | Yes      | N/A                                                                                                              |
+| `path`                | The path to the build directory on the GitHub runner.                                                                    | Yes      | `build/trunk/`                                                                                                   |
+| `switches`            | Rsync switches for deployment. This controls the behavior of the file synchronization process. [Rsync documentation](https://linux.die.net/man/1/rsync) | No       | `-avzr --delete --exclude="*.env" --exclude="env" --exclude=".github" --exclude=".git" --exclude=".gitignore" --exclude=".user.ini"` |
+| `slack-webhook`       | Slack webhook URL for notifications. Obtain this from your Slack settings. [Creating Slack webhooks](https://slack.com/help/articles/115005265063-Incoming-webhooks-for-Slack) | No       | N/A                                                                                                              |
+| `slack-channel`       | Slack channel for notifications.                                                                                         | No       | `general`                                                                                                        |
+| `slack-title`         | Title for the Slack notification.                                                                                        | No       | `Web Application Deployed`                                                                                       |
+| `slack-message`       | Message body for the Slack notification.                                                                                 | No       | `Deployment process completed. Check logs for details.`                                                          |
+| `slack-username`      | Username that will appear as the sender of the Slack notification.                                                       | No       | `WebApp Deploy Bot`                                                                                              |
+| `slack-footer`        | Footer text for the Slack notification.                                                                                  | No       | `Web Application Update Status`                                                                                  |
+| `php-version`         | PHP version to setup                                                                                                     | No       | `7.4`                                                                                                            |
+| `php-extensions`      | PHP extensions to install                                                                                                | No       | `pcov`                                                                                                           |
+| `node-version`        | Node.js version to setup                                                                                                 | No       | `16`                                                                                                             |
+| `use-php`             | Whether to setup PHP                                                                                                     | No       | `true`                                                                                                           |
+| `use-node`            | Whether to setup Node.js                                                                                                 | No       | `true`                                                                                                           |
+| `use-ssh-updates`     | Whether to execute remote SSH updates                                                                                    | No       | `true`                                                                                                           |
+| `upload-release-assets` | Whether to upload release assets                                                                                        | No       | `true`                                                                                                           |
+| `release-files`       | Files to upload to release                                                                                               | No       | `build.zip;CHANGELOG.md`                                                                                         |
 
 ## Usage
 
@@ -69,6 +80,14 @@ jobs:
           slack-message: "Deployment process completed."
           slack-username: "WebApp Deploy Bot"
           slack-footer: "Web Application Update Status"
+          php-version: '7.4'
+          php-extensions: 'pcov'
+          node-version: '16'
+          use-php: true
+          use-node: true
+          use-ssh-updates: true
+          upload-release-assets: true
+          release-files: 'build.zip;CHANGELOG.md'
 ```
 
 In this example, the workflow triggers on closed pull requests and can also be manually triggered via the GitHub Actions tab. It uses the `google-github-actions/release-please-action` to manage releases and then runs the custom deployer action if releases are created.
@@ -77,16 +96,16 @@ In this example, the workflow triggers on closed pull requests and can also be m
 
 1. **Build Directory**: The `path` input (default `build/trunk/`) specifies the directory from which files will be copied to the remote server using `rsync`. Ensure that your build process outputs the necessary files to this directory, or adjust the `path` input accordingly to match your build output location.
 
-2. **Rsync `--delete` Option**: The `--delete` option in the `switches` input is used to keep the remote directory in sync with the local build directory by deleting files on the remote server that no longer exist locally. This can be dangerous as it may result in the deletion of important files or content on the server, such as user-uploaded images or other assets. Use this option with caution to avoid unintended data loss. Consider excluding directories that should not be deleted by adding them to the `--exclude` list in the `switches` input. see:https://superuser.com/questions/156664/what-are-the-differences-between-the-rsync-delete-options
+2. **Rsync `--delete` Option**: The `--delete` option in the `switches` input is used to keep the remote directory in sync with the local build directory by deleting files on the remote server that no longer exist locally. This can be dangerous as it may result in the deletion of important files or content on the server, such as user-uploaded images or other assets. Use this option with caution to avoid unintended data loss. Consider excluding directories that should not be deleted by adding them to the `--exclude` list in the `switches` input. See: [Rsync Delete Options](https://superuser.com/questions/156664/what-are-the-differences-between-the-rsync-delete-options)
 
 ## How It Works
 
-1. **Setup Environment**: The action sets up the necessary environment, including PHP and Node.js.
-2. **Install Dependencies**: It installs the required PHP and NPM dependencies.
-3. **Build Project**: The action runs the build process for your project.
+1. **Setup Environment**: The action sets up the necessary environment, including PHP and Node.js if specified.
+2. **Install Dependencies**: It installs the required PHP and NPM dependencies if specified.
+3. **Build Project**: The action runs the build process for your project if specified.
 4. **Deploy Using Rsync**: It deploys the built artifacts to the remote server using `rsync` with the specified switches.
-5. **Remote Commands Execution**: Optionally, it runs additional commands on the remote server using SSH to complete the deployment process.
-6. **Upload Release Assets**: It uploads the built artifacts to the GitHub release.
+5. **Remote Commands Execution**: Optionally, it runs additional commands on the remote server using SSH to complete the deployment process if specified.
+6. **Upload Release Assets**: It uploads the built artifacts to the GitHub release if specified.
 7. **Slack Notification**: Finally, it sends a notification to Slack with the deployment details.
 
 ### Caveats
@@ -119,7 +138,9 @@ To add secrets to your repository:
 
 ### Continuous Integration and Continuous Deployment (CI/CD)
 
-CI/CD is a method to frequently deliver apps to customers by introducing automation into the stages of app development. The main concepts attributed to CI/CD are continuous integration, continuous delivery, and continuous deployment. This action helps implement CI/CD by automating the deployment process ([#12](https://github.com/devuri/rd-web-app-release-deployer-action/issues/12)), ensuring that your application is always in a deployable state and that updates are delivered to users quickly and efficiently.
+CI/CD is a method to frequently deliver apps to customers by introducing automation into the stages of app development. The main concepts attributed to CI/CD are continuous integration, continuous delivery, and continuous deployment. This action helps implement CI/CD by automating the deployment process, ensuring that your application is
+
+ always in a deployable state and that updates are delivered to users quickly and efficiently.
 
 ### Security
 
