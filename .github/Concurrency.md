@@ -86,7 +86,14 @@ This ensures that only one deployment runs per branch, but allows multiple branc
 GitHub provides a way to monitor the status of jobs and workflows. By using the GitHub Actions interface, you can see which jobs are queued, in progress, or canceled.
 
 
-
 Concurrency control in GitHub Actions helps you manage the execution of workflows to ensure that critical jobs do not overlap, thereby maintaining consistency and reducing resource contention. By using the `concurrency` key, you can define unique groups and cancel in-progress jobs, making sure only one job runs at a time.
 
 For more details on concurrency in GitHub Actions, refer to the [official GitHub documentation on managing concurrency](https://docs.github.com/en/actions/using-jobs/using-concurrency).
+
+### Video Tutorial
+
+For a visual explanation and more examples on concurrency in GitHub Actions, you can check out this video:
+
+[![Concurrency in GitHub Actions](https://img.youtube.com/vi/PZ_A0QiLvz8/0.jpg)](https://www.youtube.com/watch?v=PZ_A0QiLvz8&t=955s)
+
+This video provides an in-depth look at managing concurrency in your workflows and includes practical examples to help you get started.
