@@ -78,7 +78,7 @@ jobs:
 
           # Optional parameters with defaults
           path: build/trunk/                                # Path to the build directory on the GitHub runner (default: build/trunk/)
-          switches: '-avzr --exclude="*.env" --exclude="env" --exclude=".github" --exclude=".git" --exclude=".gitignore" --exclude=".user.ini"' # Rsync switches for deployment (default: '-avzr --delete --exclude="*.env" --exclude="env" --exclude=".github" --exclude=".git" --exclude=".gitignore" --exclude=".user.ini"')
+          switches: '-avzr --exclude="*.env" --exclude="env" --exclude=".github" --exclude=".git" --exclude=".gitignore" --exclude=".user.ini"' # Rsync switches for deployment (default: '-avzr --exclude="*.env" --exclude="env" --exclude=".github" --exclude=".git" --exclude=".gitignore" --exclude=".user.ini"')
           slack-webhook: ${{ secrets.SLACK_WEBHOOK }}       # Slack webhook URL for notifications
           slack-channel: general                            # Slack channel for notifications (default: general)
           slack-title: "Web Application Deployed"           # Title for the Slack notification (default: "Web Application Deployed")
