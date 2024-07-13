@@ -103,7 +103,7 @@ runs:
         path: vendor
         key: ${{ runner.os }}-php-${{ inputs.php-version }}-composer-${{ hashFiles('**/composer.lock') }}
         restore-keys: |
-          ${{ runner.os }}-php-${{ inputs.php-version }}-composer-
+          ${{ runner.os }}-php-${{ inputs.php-version }}-composer-${{ hashFiles('**/composer.lock') }}
 
     - name: Setup PHP
       if: ${{ inputs.use-php == 'true' }}
@@ -130,7 +130,7 @@ runs:
         path: ~/.npm
         key: ${{ runner.os }}-node-${{ inputs.node-version }}-npm-${{ hashFiles('**/package-lock.json') }}
         restore-keys: |
-          ${{ runner.os }}-node-${{ inputs.node-version }}-npm-
+          ${{ runner.os }}-node-${{ inputs.node-version }}-npm-${{ hashFiles('**/package-lock.json') }}
 
     - name: Setup Node
       if: ${{ inputs.use-node == 'true' }}
