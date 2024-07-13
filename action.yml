@@ -106,6 +106,7 @@ runs:
     - name: Skip PHP Setup
       if: ${{ inputs.use-php != 'true' }}
       run: echo "Skipping PHP setup as use-php is set to false."
+      shell: bash
 
     - name: Install PHP dependencies
       if: ${{ inputs.use-php == 'true' }}
@@ -122,6 +123,7 @@ runs:
     - name: Skip Node Setup
       if: ${{ inputs.use-node != 'true' }}
       run: echo "Skipping Node setup as use-node is set to false."
+      shell: bash
 
     - name: Install NPM dependencies
       if: ${{ inputs.use-node == 'true' }}
