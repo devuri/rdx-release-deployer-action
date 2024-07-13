@@ -52,7 +52,7 @@ jobs:
 
       - name: Run Custom Deployer Action
         if: ${{ steps.release.outputs.releases_created }}
-        uses: devuri/rd-web-app-release-deployer-action@v1
+        uses: devuri/rdx-release-deployer-action@v1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           deploy-path: ${{ secrets.DEPLOY_PATH }}
