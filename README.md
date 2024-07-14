@@ -33,6 +33,9 @@ The Release Deployer workflow action is an Automated Release Deployment for Cont
 | upload-release-assets | Whether to upload release assets                                                                                     | No       | true                                                                                                                               |
 | release-files         | Files to upload to release                                                                                           | No       | build.zip;CHANGELOG.md                        |
 | use-cache             | Whether to use caching for dependencies                                                                              | No       | false                                         |                             
+| upload-artifact       | Whether to upload artifacts                                                                                          | No       | false                                         |
+| artifact-name         | Name of the artifact to upload                                                                                       | No       | build-artifact                                |
+| artifact-path         | Path of the artifact to upload                                                                                       | No       | build/trunk/                                  |
 
 ## Usage
 
