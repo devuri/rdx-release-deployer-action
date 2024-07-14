@@ -93,6 +93,18 @@ inputs:
     description: 'Whether to use caching for dependencies'
     required: false
     default: false
+  upload-artifact:
+    description: 'Whether to upload artifacts'
+    required: false
+    default: false
+  artifact-name:
+    description: 'Name of the artifact to upload'
+    required: false
+    default: 'build-artifact'
+  artifact-path:
+    description: 'Path of the artifact to upload'
+    required: false
+    default: 'build/trunk/'
 
 runs:
   using: 'composite'
@@ -184,6 +196,11 @@ runs:
         echo "Upload Release Assets: ${{ inputs['upload-release-assets'] }}"
         echo "Release Files: ${{ inputs['release-files'] }}"
         echo "Use Cache: ${{ inputs['use-cache'] }}"
+        echo "Upload Artifact: ${{ inputs['upload-artifact'] }}"
+        if [ "${{ inputs.upload-artifact }}" = "true" ]; then
+          echo "Artifact Name: ${{ inputs['artifact-name'] }}"
+          echo "Artifact Path: ${{ inputs['artifact-path'] }}"
+        fi
       shell: bash
 
     - name: Deployer
@@ -233,6 +250,13 @@ runs:
       if: ${{ inputs.upload-release-assets != 'true' }}
       run: echo "Skipping upload of release assets as upload-release-assets is set to false."
       shell: bash
+
+    - name: Upload Artifact
+      if: ${{ inputs.upload-artifact == 'true' }}
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ inputs.artifact-name }}
+        path: ${{ inputs.artifact-path }}
 
     - name: Send Notification to Slack
       if: ${{ inputs.slack-webhook }}
