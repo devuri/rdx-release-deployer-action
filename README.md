@@ -211,6 +211,11 @@ CI/CD is a method to frequently deliver apps to customers by introducing automat
 
 By incorporating this action into your workflow, you can achieve a more reliable and secure deployment process, improve your development workflow, and ensure that your applications are deployed consistently and quickly.
 
+> [!IMPORTANT]
+> GitHub provides a certain amount of free minutes each month, depending on your plan, which can be sufficient for small to medium-sized projects.
+> GitHub Actions usage is based on the compute time required to run your workflows, which may vary depending on the runner used and the total minutes consumed.
+> To manage usage effectively, optimize your workflows and consider using self-hosted runners for larger projects. [Pricing calculator](https://github.com/pricing/calculator?feature=actions).
+
 ## License
 
 The scripts and documentation in this project are released under the [MIT License](LICENSE).
