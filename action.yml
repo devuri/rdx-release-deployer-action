@@ -271,3 +271,19 @@ runs:
         SLACK_WEBHOOK: ${{ inputs.slack-webhook }}
         SLACK_FOOTER: ${{ inputs.slack-footer }}
         MSG_MINIMAL: true
+
+    - name: Comment on Pull Request
+      if: github.event_name == 'pull_request'
+      uses: actions/github-script@v6
+      with:
+        script: |
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: `Deployment successful! Visit the site at ${{ inputs['site-url'] }}`
+          })
+
+    - name: Show Deployed URL
+      run: echo "Deployment successful! Visit the site at ${{ inputs['site-url'] }}"
+      shell: bash
