@@ -136,7 +136,7 @@ jobs:
           # Boolean flags
           use-php: true                                     # Whether to setup PHP (default: true)
           use-node: true                                    # Whether to setup Node.js (default: true)
-          use-remote-install: true                             # Whether to execute remote SSH updates (default: false)
+          use-remote-install: true                          # Whether to execute remote SSH updates (default: false)
           upload-release-assets: true                       # Whether to upload release assets (default: true)
 
           # Files to upload to release
