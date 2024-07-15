@@ -29,7 +29,7 @@ The Release Deployer workflow action is an Automated Release Deployment for Cont
 | node-version          | Node.js version to setup                                                                                             | No       | 16                                                                                                                                 |
 | use-php               | Whether to setup PHP                                                                                                 | No       | true                                                                                                                               |
 | use-node              | Whether to setup Node.js                                                                                             | No       | true                                                                                                                               |
-| use-ssh-updates       | Whether to execute remote SSH updates                                                                                | No       | true                                                                                                                               |
+| use-remote-install       | Whether to execute remote SSH installs/updates over                                                                               | No       | false                                                                                                                               |
 | upload-release-assets | Whether to upload release assets                                                                                     | No       | true                                                                                                                               |
 | release-files         | Files to upload to release                                                                                           | No       | build.zip;CHANGELOG.md                        |
 | use-cache             | Whether to use caching for dependencies                                                                              | No       | false                                         |                             
@@ -136,7 +136,7 @@ jobs:
           # Boolean flags
           use-php: true                                     # Whether to setup PHP (default: true)
           use-node: true                                    # Whether to setup Node.js (default: true)
-          use-ssh-updates: true                             # Whether to execute remote SSH updates (default: true)
+          use-remote-install: true                             # Whether to execute remote SSH updates (default: false)
           upload-release-assets: true                       # Whether to upload release assets (default: true)
 
           # Files to upload to release
