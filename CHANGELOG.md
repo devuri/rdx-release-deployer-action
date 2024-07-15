@@ -1,5 +1,26 @@
 # Changelog
 
+## [0.3.0](https://github.com/devuri/rdx-release-deployer-action/compare/v0.2.1...v0.3.0) (2024-07-15)
+
+
+### ⚠ BREAKING CHANGES
+
+* `use-ssh-updates` is now `use-remote-install` and `default false`
+
+### Features
+
+* `use-ssh-updates` is now `use-remote-install` and `default false` ([51965db](https://github.com/devuri/rdx-release-deployer-action/commit/51965dbf5b3f55a2c6c8c91984c7e659f57e38e4))
+* adds `upload-artifact` with `actions/upload-artifact@v4` ([84868bc](https://github.com/devuri/rdx-release-deployer-action/commit/84868bc468de81aa290d9345a7a8b2576b4313fe))
+* adds cache to speed up the workflow. ([b04c447](https://github.com/devuri/rdx-release-deployer-action/commit/b04c4474c736d1aad6045bd8969999d2482afed4))
+* adds url in pull request ([53deaba](https://github.com/devuri/rdx-release-deployer-action/commit/53deaba02b5b328a37753d8ada88087d926c0ec0))
+
+
+### Bug Fixes
+
+* cache keys Update action.yml ([c8735e7](https://github.com/devuri/rdx-release-deployer-action/commit/c8735e7c92e7928106a6b689820dbf1e0bb1e8aa))
+* make cache optional ([22ff136](https://github.com/devuri/rdx-release-deployer-action/commit/22ff1369f8f9aee50d62185866db9c88172938d5))
+* make sure site url is linked ([1d694cf](https://github.com/devuri/rdx-release-deployer-action/commit/1d694cfd79c8bd8936451cc5dd73dac6136599be))
+
 ## [0.2.1](https://github.com/devuri/rdx-release-deployer-action/compare/v0.1.8...v0.2.1) (2024-07-13)
 
 
