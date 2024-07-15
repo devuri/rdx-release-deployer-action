@@ -77,10 +77,10 @@ inputs:
     description: 'Whether to setup Node.js'
     required: false
     default: true
-  use-ssh-updates:
+  use-remote-install:
     description: 'Whether to execute remote SSH updates'
     required: false
-    default: true
+    default: false
   upload-release-assets:
     description: 'Whether to upload release assets'
     required: false
@@ -215,7 +215,7 @@ runs:
         remote_key: ${{ inputs.deploy-key }}
 
     - name: Execute Remote SSH Updates
-      if: ${{ inputs.use-php == 'true' && inputs.use-ssh-updates == 'true' }}
+      if: ${{ inputs.use-php == 'true' && inputs.use-remote-install == 'true' }}
       uses: appleboy/ssh-action@v0.1.10
       with:
         host: ${{ inputs.deploy-host }}
@@ -227,15 +227,15 @@ runs:
 
           WEB_APP_PATH=${{ inputs.deploy-path }}
 
-          echo "➤ Run Composer Install for dependencies..."
+          echo "➤ Run Install for dependencies..."
           cd $WEB_APP_PATH && composer install
 
           echo "✓ Updates Completed!"
         shell: bash
 
     - name: Skip SSH Updates
-      if: ${{ inputs.use-php != 'true' || inputs.use-ssh-updates != 'true' }}
-      run: echo "Skipping SSH updates as use-php is set to false or use-ssh-updates is set to false."
+      if: ${{ inputs.use-php != 'true' || inputs.use-remote-install != 'true' }}
+      run: echo "Skipping SSH updates as use-php is set to false or use-remote-install is set to false."
       shell: bash
 
     - name: Upload Release Assets
