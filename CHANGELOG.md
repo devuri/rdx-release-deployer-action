@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.1](https://github.com/devuri/rdx-release-deployer-action/compare/v0.3.0...v0.3.1) (2024-07-16)
+
+
+### Bug Fixes
+
+* `include-component-in-tag` set to `false` Update release-please-config.json ([2a8fa91](https://github.com/devuri/rdx-release-deployer-action/commit/2a8fa913ad0d418ce353cf181e49ab725c57e033))
+
 ## [0.3.0](https://github.com/devuri/rdx-release-deployer-action/compare/v0.2.1...v0.3.0) (2024-07-15)
 
 
