@@ -1,9 +1,10 @@
 {
+  "release-type": "node",
+  "include-component-in-tag": false,
   "packages": {
     ".": {}
   },
   "plugins": [],
-  "release-type": "simple",
   "draft": false,
   "prerelease": false,
   "bump-minor-pre-major": true,
