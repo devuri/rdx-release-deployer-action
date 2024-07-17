@@ -215,7 +215,7 @@ runs:
         remote_key: ${{ inputs.deploy-key }}
 
     - name: Execute Remote SSH Updates
-      if: ${{ inputs.use-php == 'true' && inputs.use-remote-install == 'true' }}
+      if: ${{ inputs.use-remote-install == 'true' }}
       uses: appleboy/ssh-action@v0.1.10
       with:
         host: ${{ inputs.deploy-host }}
@@ -234,8 +234,8 @@ runs:
         shell: bash
 
     - name: Skip SSH Updates
-      if: ${{ inputs.use-php != 'true' || inputs.use-remote-install != 'true' }}
-      run: echo "Skipping SSH updates as use-php is set to false or use-remote-install is set to false."
+      if: ${{ inputs.use-remote-install != 'true' }}
+      run: echo "Skipping SSH updates as use-remote-install is set to false."
       shell: bash
 
     - name: Upload Release Assets
