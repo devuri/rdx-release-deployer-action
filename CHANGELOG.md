@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.2](https://github.com/devuri/rdx-release-deployer-action/compare/v0.3.1...v0.3.2) (2024-07-17)
+
+
+### Bug Fixes
+
+* only check `inputs.use-remote-install` Update action.yml ([a01ac9b](https://github.com/devuri/rdx-release-deployer-action/commit/a01ac9bacccb9e6183458d576313e1b5dd22e3ca))
+
 ## [0.3.1](https://github.com/devuri/rdx-release-deployer-action/compare/v0.3.0...v0.3.1) (2024-07-16)
 
 
