@@ -63,7 +63,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           command: manifest
-          default-branch: master
+          default-branch: main
 
       - name: Run Custom Deployer Action
         if: ${{ steps.release.outputs.releases_created }}
@@ -102,7 +102,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           command: manifest
-          default-branch: master
+          default-branch: main
 
       - name: Run Custom Deployer Action
         if: ${{ steps.release.outputs.releases_created }}
