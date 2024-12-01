@@ -1,4 +1,5 @@
-name: 🚀 Release Deployer
+name: 🚀 Release & Deployment Workflow
+
 on:
   pull_request:
     types:
@@ -9,26 +10,27 @@ jobs:
   release:
     runs-on: ubuntu-latest
     steps:
-      - name: Run release-please
+      - name: 📦 Generate Release with release-please
         uses: googleapis/release-please-action@v4
         id: release
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           command: manifest
-          default-branch: master
+          default-branch: main
 
-      - name: Run Custom Deployer Action
+      - name: 🚀 Deploy Release to Remote Server
         if: ${{ steps.release.outputs.releases_created }}
         uses: devuri/rdx-release-deployer-action@v1
         with:
-          site-url: ${{ secrets.SITE_URL }}                 # Deployment site URL
-          github-token: ${{ secrets.GITHUB_TOKEN }}         # GitHub Token
-          deploy-path: ${{ secrets.DEPLOY_PATH }}           # Remote deploy path
-          deploy-host: ${{ secrets.DEPLOY_HOST }}           # Remote deploy host
-          deploy-port: ${{ secrets.DEPLOY_PORT }}           # Remote deploy port
-          deploy-user: ${{ secrets.DEPLOY_USER }}           # Remote deploy user
-          deploy-key: ${{ secrets.DEPLOY_KEY }}             # Remote deploy key
-          tag-name: ${{ steps.release.outputs.tag_name }}   # Release tag name
+          site-url: ${{ secrets.SITE_URL }}                 # 🌐 Deployment site URL
+          github-token: ${{ secrets.GITHUB_TOKEN }}         # 🔑 GitHub Token
+          deploy-path: ${{ secrets.DEPLOY_PATH }}           # 📂 Remote deployment path
+          deploy-host: ${{ secrets.DEPLOY_HOST }}           # 🖥️ Remote deployment host
+          deploy-port: ${{ secrets.DEPLOY_PORT }}           # 🔌 Remote deployment port
+          deploy-user: ${{ secrets.DEPLOY_USER }}           # 👤 Remote deployment user
+          deploy-key: ${{ secrets.DEPLOY_KEY }}             # 🔑 Remote deployment key
+          tag-name: ${{ steps.release.outputs.tag_name }}   # 🏷️ Release tag name
 
-          path: build/trunk/                                # Path to the build directory on the GitHub runner (default: build/trunk/)
-          slack-webhook: ${{ secrets.SLACK_WEBHOOK }}       # Slack webhook URL for notifications
+          path: build/trunk/                                # 📁 Local build directory
+          slack-webhook: ${{ secrets.SLACK_WEBHOOK }}       # 🔔 Slack webhook for notifications
+
