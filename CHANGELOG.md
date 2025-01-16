@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.3](https://github.com/devuri/rdx-release-deployer-action/compare/v0.3.2...v0.3.3) (2025-01-16)
+
+
+### Bug Fixes
+
+* adds some new default `--excludes` Update action.yml ([92767ad](https://github.com/devuri/rdx-release-deployer-action/commit/92767ade3fd433aa95e572ea0f0ed094259a0072))
+
 ## [0.3.2](https://github.com/devuri/rdx-release-deployer-action/compare/v0.3.1...v0.3.2) (2024-07-17)
 
 
