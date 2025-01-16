@@ -33,7 +33,7 @@ inputs:
   switches:
     description: 'Rsync switches for deployment'
     required: false
-    default: '-avzr --exclude="*.env" --exclude="env" --exclude=".github" --exclude=".git" --exclude=".gitignore" --exclude=".user.ini"'
+    default: '-avzr --exclude="*.env" --exclude="env" --exclude=".github" --exclude=".git" --exclude=".gitignore" --exclude=".user.ini" --exclude="release-please-config.json" --exclude=".release-please-manifest.json" --exclude="CHANGELOG.md"'
   slack-webhook:
     description: 'Slack webhook URL for notifications'
     required: false
