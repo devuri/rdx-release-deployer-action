@@ -228,7 +228,7 @@ runs:
           WEB_APP_PATH=${{ inputs.deploy-path }}
 
           echo "➤ Run Install for dependencies..."
-          cd $WEB_APP_PATH && composer install
+          cd $WEB_APP_PATH && composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist
 
           echo "✓ Updates Completed!"
         shell: bash
