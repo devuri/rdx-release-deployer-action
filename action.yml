@@ -78,6 +78,10 @@ inputs:
     required: false
     default: true
   use-remote-install:
+    description: 'Whether to execute remote SSH installs'
+    required: false
+    default: false
+  use-remote-update:
     description: 'Whether to execute remote SSH updates'
     required: false
     default: false
@@ -214,7 +218,7 @@ runs:
         remote_user: ${{ inputs.deploy-user }}
         remote_key: ${{ inputs.deploy-key }}
 
-    - name: Execute Remote SSH Updates
+    - name: Remote SSH Install
       if: ${{ inputs.use-remote-install == 'true' }}
       uses: appleboy/ssh-action@v0.1.10
       with:
@@ -229,6 +233,25 @@ runs:
 
           echo "➤ Run Install for dependencies..."
           cd $WEB_APP_PATH && composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist
+
+          echo "✓ Installs Completed!"
+        shell: bash
+
+    - name: Remote SSH Updates
+      if: ${{ inputs.use-remote-update == 'true' }}
+      uses: appleboy/ssh-action@v0.1.10
+      with:
+        host: ${{ inputs.deploy-host }}
+        username: ${{ inputs.deploy-user }}
+        key: ${{ inputs.deploy-key }}
+        port: ${{ inputs.deploy-port }}
+        script: |
+          set -eo # Stop on error
+
+          WEB_APP_PATH=${{ inputs.deploy-path }}
+
+          echo "➤ Run Install for dependencies..."
+          cd $WEB_APP_PATH && composer update --no-dev --optimize-autoloader --no-interaction --prefer-dist
 
           echo "✓ Updates Completed!"
         shell: bash
