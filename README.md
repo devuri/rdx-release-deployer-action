@@ -18,7 +18,7 @@ The Release Deployer workflow action is an Automated Release Deployment for Cont
 | deploy-user           | The username for SSH access to the remote server.                                                                    | Yes      | N/A                                                                                                                                |
 | deploy-key            | The private SSH key for accessing the remote server. [Generate an SSH key](https://docs.github.com/en/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent)                                              | Yes      | N/A                                                                                                                                |
 | tag-name              | The tag name from release build.                                                                                     | Yes      | N/A                                                                                                                                |
-| path                  | The path to the build directory on the GitHub runner.                                                                | Yes      | build/trunk/                                                                                                                       |
+| path                  | The path to the source directory to deploy.                                                                          | Yes      | ./                                                                                                                                 |
 | switches              | Rsync switches for deployment. This controls the behavior of the file synchronization process. [Rsync documentation](https://linux.die.net/man/1/rsync)   | No       | -avzr --exclude="*.env" --exclude="env" --exclude=".github" --exclude=".git" --exclude=".gitignore" --exclude=".user.ini" --exclude="release-please-config.json" --exclude=".release-please-manifest.json" --exclude="CHANGELOG.md" |
 | slack-webhook         | Slack webhook URL for notifications. Obtain this from your Slack settings. [Creating Slack webhooks](https://slack.com/help/articles/115005265063-Incoming-webhooks-for-Slack)                   | No       | N/A                                                                                                                                |
 | slack-channel         | Slack channel for notifications.                                                                                     | No       | general                                                                                                                            |
@@ -120,7 +120,7 @@ jobs:
           tag-name: ${{ steps.release.outputs.tag_name }}   # Release tag name
 
           # Optional parameters with defaults
-          path: build/trunk/                                # Path to the build directory on the GitHub runner (default: build/trunk/)
+          path: ./                                          # Path to the source directory to deploy (default: ./)
           switches: '-avzr --exclude="*.env" --exclude="env" --exclude=".github" --exclude=".git" --exclude=".gitignore" --exclude=".user.ini"' # Rsync switches for deployment
           slack-webhook: ${{ secrets.SLACK_WEBHOOK }}       # Slack webhook URL for notifications
           slack-channel: general                            # Slack channel for notifications (default: general)
@@ -158,7 +158,7 @@ In this example, the workflow triggers on closed pull requests and can also be m
 > [!WARNING]  
 > The `--delete` option in the `switches` can be dangerous as it may result in the deletion of important files or content on the server.
 
-1. **Build Directory**: The `path` input (default `build/trunk/`) specifies the directory from which files will be copied to the remote server using `rsync`. Ensure that your build process outputs the necessary files to this directory, or adjust the `path` input accordingly to match your build output location.
+1. **Source Directory**: The `path` input (default `./`) specifies the directory from which files will be copied to the remote server using `rsync`. With the default server-side build approach, this typically points to your source code directory. If using GitHub Actions builds (`use-php: true` or `use-node: true`), adjust the `path` input to match your build output location (e.g., `build/`, `dist/`).
 
 2. **Rsync `--delete` Option**: The `--delete` option in the `switches` input is used to keep the remote directory in sync with the local build directory by deleting files on the remote server that no longer exist locally. This can be dangerous as it may result in the deletion of important files or content on the server, such as user-uploaded images or other assets. Use this option with caution to avoid unintended data loss. Consider excluding directories that should not be deleted by adding them to the `--exclude` list in the `switches` input. See: [Rsync Delete Options](https://superuser.com/questions/156664/what-are-the-differences-between-the-rsync-delete-options)
 
