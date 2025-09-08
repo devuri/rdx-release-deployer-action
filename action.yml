@@ -27,9 +27,9 @@ inputs:
     description: 'The release tag'
     required: true
   path:
-    description: 'Path to the build directory'
+    description: 'Path to the source directory to deploy'
     required: true
-    default: 'build/trunk/'
+    default: './'
   switches:
     description: 'Rsync switches for deployment'
     required: false
@@ -60,7 +60,7 @@ inputs:
   php-version:
     description: 'PHP version to setup'
     required: false
-    default: '7.4'
+    default: '8.1'
   php-extensions:
     description: 'PHP extensions to install'
     required: false
@@ -68,19 +68,19 @@ inputs:
   node-version:
     description: 'Node.js version to setup'
     required: false
-    default: '16'
+    default: '18'
   use-php:
     description: 'Whether to setup PHP'
     required: false
-    default: true
+    default: false
   use-node:
     description: 'Whether to setup Node.js'
     required: false
-    default: true
+    default: false
   use-remote-install:
     description: 'Whether to execute remote SSH installs'
     required: false
-    default: false
+    default: true
   use-remote-update:
     description: 'Whether to execute remote SSH updates'
     required: false
@@ -134,7 +134,7 @@ runs:
 
     - name: Skip PHP Setup
       if: ${{ inputs.use-php != 'true' }}
-      run: echo "Skipping PHP setup as use-php is set to false."
+      run: echo "Skipping PHP setup - using remote server for PHP dependencies."
       shell: bash
 
     - name: Install PHP dependencies
@@ -160,7 +160,7 @@ runs:
 
     - name: Skip Node Setup
       if: ${{ inputs.use-node != 'true' }}
-      run: echo "Skipping Node setup as use-node is set to false."
+      run: echo "Skipping Node setup - using remote server for Node dependencies."
       shell: bash
 
     - name: Install NPM dependencies
@@ -190,6 +190,7 @@ runs:
         if [ "${{ inputs.use-node }}" = "true" ]; then
           echo "Node Version: ${{ inputs['node-version'] }}"
         fi
+        echo "Use Remote Install: ${{ inputs['use-remote-install'] }}"
         echo "Rsync Switches: ${{ inputs['switches'] }}"
         echo "Slack Webhook: ${{ inputs['slack-webhook'] }}"
         echo "Slack Channel: ${{ inputs['slack-channel'] }}"
@@ -231,11 +232,37 @@ runs:
 
           WEB_APP_PATH=${{ inputs.deploy-path }}
 
-          echo "➤ Run Install for dependencies..."
-          cd $WEB_APP_PATH && composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist
+          echo "➤ Installing dependencies on remote server..."
+          cd $WEB_APP_PATH
 
-          echo "✓ Installs Completed!"
-        shell: bash
+          # Install PHP dependencies if composer.json exists
+          if [ -f "composer.json" ]; then
+            echo "📦 Installing PHP dependencies..."
+            composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist
+            echo "✓ PHP dependencies installed!"
+          else
+            echo "ℹ️  No composer.json found, skipping PHP dependencies"
+          fi
+
+          # Install Node dependencies and build if package.json exists
+          if [ -f "package.json" ]; then
+            echo "📦 Installing Node dependencies..."
+            npm ci --production=false
+            echo "✓ Node dependencies installed!"
+
+            # Run build if build script exists
+            if npm run | grep -q "build"; then
+              echo "🔨 Building assets..."
+              npm run build
+              echo "✓ Assets built!"
+            else
+              echo "ℹ️  No build script found, skipping build step"
+            fi
+          else
+            echo "ℹ️  No package.json found, skipping Node dependencies"
+          fi
+
+          echo "✅ Remote installation completed!"
 
     - name: Remote SSH Updates
       if: ${{ inputs.use-remote-update == 'true' }}
@@ -250,15 +277,23 @@ runs:
 
           WEB_APP_PATH=${{ inputs.deploy-path }}
 
-          echo "➤ Run Install for dependencies..."
-          cd $WEB_APP_PATH && composer update --no-dev --optimize-autoloader --no-interaction --prefer-dist
+          echo "➤ Updating dependencies on remote server..."
+          cd $WEB_APP_PATH
 
-          echo "✓ Updates Completed!"
-        shell: bash
+          # Update PHP dependencies if composer.json exists
+          if [ -f "composer.json" ]; then
+            echo "📦 Updating PHP dependencies..."
+            composer update --no-dev --optimize-autoloader --no-interaction --prefer-dist
+            echo "✓ PHP dependencies updated!"
+          else
+            echo "ℹ️  No composer.json found, skipping PHP updates"
+          fi
 
-    - name: Skip SSH Updates
+          echo "✅ Remote updates completed!"
+
+    - name: Skip SSH Install
       if: ${{ inputs.use-remote-install != 'true' }}
-      run: echo "Skipping SSH updates as use-remote-install is set to false."
+      run: echo "Skipping SSH install - dependencies will not be installed on remote server."
       shell: bash
 
     - name: Upload Release Assets
