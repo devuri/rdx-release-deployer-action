@@ -1,0 +1,36 @@
+name: 🚀 Deploy Production
+on:
+  pull_request:
+    types:
+      - closed
+  workflow_dispatch:
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run release-please
+        uses: googleapis/release-please-action@v4
+        id: release
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          command: manifest
+          default-branch: main
+
+      - name: 🚀 Deploy to Production 🟢
+        if: ${{ steps.release.outputs.releases_created }}
+        uses: devuri/rdx-release-deployer-action@main
+        with:
+          site-url: ${{ secrets.SITE_URL_PRODUCTION }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          deploy-path: ${{ secrets.DEPLOY_PATH_PRODUCTION }}
+          deploy-host: ${{ secrets.DEPLOY_HOST_PRODUCTION }}
+          deploy-port: ${{ secrets.DEPLOY_PORT_PRODUCTION }}
+          deploy-user: ${{ secrets.DEPLOY_USER_PRODUCTION }}
+          deploy-key: ${{ secrets.DEPLOY_KEY_PRODUCTION }}
+          path: /
+          tag-name: ${{ steps.release.outputs.tag_name }}
+          use-cache: true
+          use-node: false
+          use-php: false
+          use-remote-install: true
