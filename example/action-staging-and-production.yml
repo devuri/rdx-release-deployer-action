@@ -1,5 +1,4 @@
 name: 🚀 Release & Deployment Workflow
-
 on:
   pull_request:
     types:
@@ -9,6 +8,9 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
+    outputs:
+      releases_created: ${{ steps.release.outputs.releases_created }}
+      tag_name: ${{ steps.release.outputs.tag_name }}
     steps:
       - name: 📦 Generate Release with release-please
         uses: googleapis/release-please-action@v4
@@ -21,7 +23,7 @@ jobs:
   deploy-staging:
     needs: release
     runs-on: ubuntu-latest
-    if: ${{ steps.release.outputs.releases_created }}
+    if: ${{ needs.release.outputs.releases_created }}
     steps:
       - name: 🚀 Deploy Release to Staging
         uses: devuri/rdx-release-deployer-action@v1
@@ -33,8 +35,8 @@ jobs:
           deploy-port: ${{ secrets.STAGING_DEPLOY_PORT }}   # 🔌 Remote staging port
           deploy-user: ${{ secrets.STAGING_DEPLOY_USER }}   # 👤 Remote staging user
           deploy-key: ${{ secrets.STAGING_DEPLOY_KEY }}     # 🔑 Remote staging key
-          tag-name: ${{ steps.release.outputs.tag_name }}   # 🏷️ Release tag name
-          path: build/trunk/                                # 📁 Local build directory
+          tag-name: ${{ needs.release.outputs.tag_name }}   # 🏷️ Release tag name
+          path: ./                                          # 📁 Source directory to deploy
           slack-webhook: ${{ secrets.SLACK_WEBHOOK }}       # 🔔 Slack webhook for notifications
 
   deploy-production:
@@ -51,6 +53,6 @@ jobs:
           deploy-port: ${{ secrets.PRODUCTION_DEPLOY_PORT }}   # 🔌 Remote production port
           deploy-user: ${{ secrets.PRODUCTION_DEPLOY_USER }}   # 👤 Remote production user
           deploy-key: ${{ secrets.PRODUCTION_DEPLOY_KEY }}     # 🔑 Remote production key
-          tag-name: ${{ steps.release.outputs.tag_name }}      # 🏷️ Release tag name
-          path: build/trunk/                                   # 📁 Local build directory
+          tag-name: ${{ needs.release.outputs.tag_name }}      # 🏷️ Release tag name
+          path: ./                                             # 📁 Source directory to deploy
           slack-webhook: ${{ secrets.SLACK_WEBHOOK }}          # 🔔 Slack webhook for notifications
