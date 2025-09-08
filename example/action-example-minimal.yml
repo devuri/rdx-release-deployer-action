@@ -1,5 +1,4 @@
 name: 🚀 Release & Deployment Workflow
-
 on:
   pull_request:
     types:
@@ -30,7 +29,5 @@ jobs:
           deploy-user: ${{ secrets.DEPLOY_USER }}           # 👤 Remote deployment user
           deploy-key: ${{ secrets.DEPLOY_KEY }}             # 🔑 Remote deployment key
           tag-name: ${{ steps.release.outputs.tag_name }}   # 🏷️ Release tag name
-
-          path: build/trunk/                                # 📁 Local build directory
+          path: ./                                          # 📁 Source directory to deploy
           slack-webhook: ${{ secrets.SLACK_WEBHOOK }}       # 🔔 Slack webhook for notifications
-
