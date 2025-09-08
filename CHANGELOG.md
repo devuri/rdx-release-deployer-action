@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.4.0](https://github.com/devuri/rdx-release-deployer-action/compare/v0.3.4...v0.4.0) (2025-09-08)
+
+
+### ⚠ BREAKING CHANGES
+
+* Default behavior now uses production server for builds  instead of GitHub Actions
+
+### Features
+
+* optimize defaults for server-side builds and cost efficiency ([dc9f0fe](https://github.com/devuri/rdx-release-deployer-action/commit/dc9f0fe04b948bd388a35bb543cc8f70cf8d3752))
+
+
+### Bug Fixes
+
+* update source directory ([b72ba48](https://github.com/devuri/rdx-release-deployer-action/commit/b72ba485076a9bc14c7f9bc5001eeb2da72b1cbc))
+
 ## [0.3.4](https://github.com/devuri/rdx-release-deployer-action/compare/v0.3.3...v0.3.4) (2025-03-10)
 
 
