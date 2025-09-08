@@ -30,18 +30,44 @@ Before starting, ensure you have:
 
 ## Part 1: Initial Setup
 
-### Step 1: Generate SSH Keys
+### Step 1: SSH Key Setup
 
-First, create SSH keys for secure server access:
+You have two options for SSH keys:
+
+#### Option A: Generate New SSH Keys (Recommended)
+
+Create dedicated SSH keys for deployment:
 
 ```bash
-# Generate a new SSH key pair
-ssh-keygen -t rsa -b 4096 -C "github-actions@yourdomain.com"
+# Generate a new SSH key pair specifically for deployments
+ssh-keygen -t rsa -b 4096 -C "github-actions@yourdomain.com" -f ~/.ssh/github_deploy_key
 
 # This creates two files:
-# - id_rsa (private key - for GitHub secrets)
-# - id_rsa.pub (public key - for your server)
+# - github_deploy_key (private key - for GitHub secrets)
+# - github_deploy_key.pub (public key - for your server)
 ```
+
+#### Option B: Use Existing SSH Keys
+
+If you already have SSH keys you want to use:
+
+```bash
+# List your existing keys
+ls -la ~/.ssh/
+
+# Typical key files:
+# - id_rsa / id_rsa.pub (RSA keys)
+# - id_ed25519 / id_ed25519.pub (Ed25519 keys)
+# - Custom named keys
+
+# Use your existing private key content for GitHub secrets
+# Use your existing public key for server authorization
+```
+
+**Security Note**: Using dedicated deployment keys (Option A) is more secure as it allows you to:
+- Rotate keys independently
+- Limit key usage to specific servers
+- Revoke deployment access without affecting other services
 
 ### Step 2: Configure Server Access
 
@@ -408,6 +434,7 @@ strategy:
       cd ${{ secrets.DEPLOY_PATH }}
       php artisan migrate --force
 ```
+
 
 
 The Release Deployer Action provides a powerful, flexible solution for automating your deployment pipeline. By leveraging server-side builds by default, it offers cost-effective deployments while maintaining the option to use GitHub Actions runners when needed.
