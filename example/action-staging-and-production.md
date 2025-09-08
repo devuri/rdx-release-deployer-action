@@ -16,7 +16,6 @@ This GitHub Actions workflow automates the release process and deployment to bot
    - Deploys the release to the **Production environment**.
    - Runs only after a successful Staging deployment.
 
-
 ## 📂 Workflow Structure
 
 ### Trigger
@@ -26,13 +25,17 @@ This GitHub Actions workflow automates the release process and deployment to bot
 ### Jobs
 1. **`release`**:
    - Generates a release using `release-please`.
+   - Exposes release outputs for downstream jobs.
+
 2. **`deploy-staging`**:
    - Deploys to the **Staging environment**.
    - Triggered only if a release is successfully created.
+   - Uses the default server-side build approach for efficiency.
+
 3. **`deploy-production`**:
    - Deploys to the **Production environment**.
    - Triggered only after a successful Staging deployment.
-
+   - Uses the same efficient deployment approach as staging.
 
 ## 🔧 Configuration
 
@@ -56,8 +59,6 @@ Ensure the following secrets are configured in your repository:
 | `PRODUCTION_DEPLOY_KEY`     | SSH key for Production server.                |
 | `SLACK_WEBHOOK`             | Slack webhook for deployment notifications.   |
 
-
-
 ## 📋 Usage
 
 ### Automatic Trigger
@@ -66,13 +67,12 @@ Ensure the following secrets are configured in your repository:
 ### Manual Trigger
 - Use the **Run Workflow** button in the **Actions** tab to start the workflow manually.
 
-
-
 ## 🚀 Benefits
 
 - **Streamlined Releases**: Automated release creation with `release-please`.
 - **Environment Separation**: Staging deployment ensures validation before production.
+- **Cost Efficient**: Uses server-side builds by default to save GitHub Actions minutes.
 - **Notifications**: Integrated Slack notifications keep the team informed.
-
+- **Reliable Dependencies**: Job outputs properly passed between workflow stages.
 
 Happy Deploying! 🎉
