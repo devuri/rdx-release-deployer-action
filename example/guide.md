@@ -141,10 +141,22 @@ Create `release-please-config.json` in your repository root:
 ```json
 {
   "packages": {
-    ".": {
-      "release-type": "simple",
-      "include-component-in-tag": false
-    }
+    ".": {}
+  },
+  "plugins": [],
+  "release-type": "php",
+  "draft": false,
+  "prerelease": false,
+  "bump-minor-pre-major": true,
+  "bump-patch-for-minor-pre-major": true,
+  "include-v-in-tag": false,
+  "labels": {
+    "feat": "minor",
+    "bug": "patch",
+    "fix": "patch",
+    "test": "patch",
+    "build": "patch",
+    "refactor": "minor"
   }
 }
 ```
@@ -153,7 +165,7 @@ Create `.release-please-manifest.json`:
 
 ```json
 {
-  ".": "1.0.0"
+  ".": "0.0.1"
 }
 ```
 
