@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.3.4](https://github.com/devuri/rdx-release-deployer-action/compare/v0.3.3...v0.3.4) (2025-03-10)
+
+
+### Bug Fixes
+
+* adds `Remote SSH Updates` Update action.yml ([8c5f3e0](https://github.com/devuri/rdx-release-deployer-action/commit/8c5f3e04846320a35ff7498c20332e3b7ece6620))
+* adds `Remote SSH Updates` Update action.yml ([22953a6](https://github.com/devuri/rdx-release-deployer-action/commit/22953a60d853b4e9db932dbf55eaf68049baad67))
+* optimized composer install Update action.yml ([35df9b6](https://github.com/devuri/rdx-release-deployer-action/commit/35df9b634c72cbb0219e56e7134265cde4e3bde0))
+* optimized composer install Update action.yml ([c34dfa3](https://github.com/devuri/rdx-release-deployer-action/commit/c34dfa3d6ebe00c564fc7caed7ce39bece7ba046))
+
 ## [0.3.3](https://github.com/devuri/rdx-release-deployer-action/compare/v0.3.2...v0.3.3) (2025-01-16)
 
 
