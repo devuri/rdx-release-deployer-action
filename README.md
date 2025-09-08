@@ -4,6 +4,8 @@
 
 The Release Deployer workflow action is an Automated Release Deployment for Continuous Integration / Continuous Deployment (CI/CD). It is designed to automate the deployment process of your web application. This action handles setting up the environment, installing dependencies, building the project (the build package), deploying it to a remote server, and sending notifications to Slack.
 
+**Optimized for Efficiency**: By default, this action uses your production server to handle dependency installation and builds, saving GitHub Actions minutes and costs while ensuring deployments happen in the actual target environment.
+
 ## Inputs
 
 | Input                 | Description                                                                                                          | Required | Default                                                                                                                            |
@@ -24,12 +26,12 @@ The Release Deployer workflow action is an Automated Release Deployment for Cont
 | slack-message         | Message body for the Slack notification.                                                                             | No       | Deployment process completed. Check logs for details.                                                                              |
 | slack-username        | Username that will appear as the sender of the Slack notification.                                                   | No       | WebApp Deploy Bot                                                                                                                  |
 | slack-footer          | Footer text for the Slack notification.                                                                              | No       | Web Application Update Status                                                                                                      |
-| php-version           | PHP version to setup                                                                                                 | No       | 7.4                                                                                                                                |
+| php-version           | PHP version to setup                                                                                                 | No       | 8.1                                                                                                                                |
 | php-extensions        | PHP extensions to install                                                                                            | No       | pcov                                                                                                                               |
-| node-version          | Node.js version to setup                                                                                             | No       | 16                                                                                                                                 |
-| use-php               | Whether to setup PHP                                                                                                 | No       | true                                                                                                                               |
-| use-node              | Whether to setup Node.js                                                                                             | No       | true                                                                                                                               |
-| use-remote-install    | Whether to execute remote SSH installs                                                                               | No       | false                                                                                                                               |
+| node-version          | Node.js version to setup                                                                                             | No       | 18                                                                                                                                 |
+| use-php               | Whether to setup PHP on GitHub Actions runner                                                                       | No       | false                                                                                                                              |
+| use-node              | Whether to setup Node.js on GitHub Actions runner                                                                   | No       | false                                                                                                                              |
+| use-remote-install    | Whether to execute remote SSH installs (auto-detects composer.json and package.json)                               | No       | true                                                                                                                               |
 | use-remote-update     | Whether to execute remote SSH updates                                                                                | No       | false                                                                                                                               |
 | upload-release-assets | Whether to upload release assets                                                                                     | No       | true                                                                                                                               |
 | release-files         | Files to upload to release                                                                                           | No       | build.zip;CHANGELOG.md                        |
@@ -44,7 +46,7 @@ To use this action in your workflow, include the following steps in your GitHub 
 
 ### Example Workflow
 
-Basic example:
+**Simplified example (recommended):**
 
 ```yaml
 name: 🚀 Release Deployer
@@ -66,9 +68,9 @@ jobs:
           command: manifest
           default-branch: main
 
-      - name: Run Custom Deployer Action
+      - name: 🚀 Deploy to Production 🟢
         if: ${{ steps.release.outputs.releases_created }}
-        uses: devuri/rdx-release-deployer-action@v1
+        uses: devuri/rdx-release-deployer-action@main
         with:
           site-url: ${{ secrets.SITE_URL }}                 # Deployment site URL
           github-token: ${{ secrets.GITHUB_TOKEN }}         # GitHub Token
@@ -78,12 +80,10 @@ jobs:
           deploy-user: ${{ secrets.DEPLOY_USER }}           # Remote deploy user
           deploy-key: ${{ secrets.DEPLOY_KEY }}             # Remote deploy key
           tag-name: ${{ steps.release.outputs.tag_name }}   # Release tag name
-
-          path: build/trunk/                                # Path to the build directory on the GitHub runner (default: build/trunk/)
-          slack-webhook: ${{ secrets.SLACK_WEBHOOK }}       # Slack webhook URL for notifications
+          slack-webhook: ${{ secrets.SLACK_WEBHOOK }}       # Optional: Slack notifications
 ```
 
-Example with comments for each parameter:
+**Advanced example with custom configuration:**
 
 ```yaml
 name: 🚀 Release Deployer
@@ -121,7 +121,7 @@ jobs:
 
           # Optional parameters with defaults
           path: build/trunk/                                # Path to the build directory on the GitHub runner (default: build/trunk/)
-          switches: '-avzr --exclude="*.env" --exclude="env" --exclude=".github" --exclude=".git" --exclude=".gitignore" --exclude=".user.ini"' # Rsync switches for deployment (default: '-avzr --exclude="*.env" --exclude="env" --exclude=".github" --exclude=".git" --exclude=".gitignore" --exclude=".user.ini"')
+          switches: '-avzr --exclude="*.env" --exclude="env" --exclude=".github" --exclude=".git" --exclude=".gitignore" --exclude=".user.ini"' # Rsync switches for deployment
           slack-webhook: ${{ secrets.SLACK_WEBHOOK }}       # Slack webhook URL for notifications
           slack-channel: general                            # Slack channel for notifications (default: general)
           slack-title: "Web Application Deployed"           # Title for the Slack notification (default: "Web Application Deployed")
@@ -130,28 +130,26 @@ jobs:
           slack-footer: "Web Application Update Status"     # Footer text for the Slack notification (default: "Web Application Update Status")
 
           # Optional setup parameters with defaults
-          php-version: '7.4'                                # PHP version to setup (default: '7.4')
+          php-version: '8.1'                                # PHP version to setup (default: '8.1')
           php-extensions: 'pcov'                            # PHP extensions to install (default: 'pcov')
-          node-version: '16'                                # Node.js version to setup (default: '16')
+          node-version: '18'                                # Node.js version to setup (default: '18')
 
-          # Boolean flags
-          use-php: true                                     # Whether to setup PHP (default: true)
-          use-node: true                                    # Whether to setup Node.js (default: true)
-          use-remote-install: true                          # Whether to execute remote SSH installs (default: false)
-          use-remote-update: true                           # Whether to execute remote SSH updates (default: false)
+          # Boolean flags (customize as needed)
+          use-php: true                                     # Whether to setup PHP on GitHub Actions runner (default: false)
+          use-node: true                                    # Whether to setup Node.js on GitHub Actions runner (default: false)
+          use-remote-install: true                          # Whether to execute remote SSH installs (default: true)
+          use-remote-update: false                          # Whether to execute remote SSH updates (default: false)
           upload-release-assets: true                       # Whether to upload release assets (default: true)
 
           # Files to upload to release
           release-files: 'build.zip;CHANGELOG.md'           # Files to upload to release (default: 'build.zip;CHANGELOG.md')
-
 ```
 
 ### Explanation
 - **Required Parameters**: These are essential for the action to run and have no default values.
-- **Optional Parameters with Defaults**: These parameters have default values and can be overridden.
-- **Optional Parameters without Defaults**: These parameters do not have default values specified in the workflow.
+- **Efficient Defaults**: By default, the action uses your production server for dependency installation and builds (saves GitHub Actions minutes).
+- **Optional Overrides**: You can override defaults to use GitHub Actions runners for building if needed.
 - **Boolean Flags**: These control whether specific steps in the workflow are executed.
-- **Files to Upload to Release**: Specifies the files to be uploaded as release assets.
 
 In this example, the workflow triggers on closed pull requests and can also be manually triggered via the GitHub Actions tab. It uses the `googleapis/release-please-action` to [manage releases](https://github.com/googleapis/release-please-action) and then runs the custom deployer action if releases are created.
 
@@ -166,20 +164,29 @@ In this example, the workflow triggers on closed pull requests and can also be m
 
 ## How It Works
 
-1. **Setup Environment**: The action sets up the necessary environment, including PHP and Node.js if specified.
-2. **Install Dependencies**: It installs the required PHP and NPM dependencies if specified.
-3. **Build Project**: The action runs the build process for your project if specified.
-4. **Deploy Using Rsync**: It deploys the built artifacts to the remote server using `rsync` with the specified switches.
-5. **Remote Commands Execution**: Optionally, it runs additional commands on the remote server using SSH to complete the deployment process if specified.
-6. **Upload Release Assets**: It uploads the built artifacts to the GitHub release if specified.
-7. **Slack Notification**: Finally, it sends a notification to Slack with the deployment details.
+### Default Behavior (Efficient)
+1. **Deploy Files**: The action deploys your source files to the remote server using `rsync`.
+2. **Remote Dependency Installation**: The action automatically detects and installs dependencies on your production server:
+   - If `composer.json` exists: runs `composer install --no-dev --optimize-autoloader`
+   - If `package.json` exists: runs `npm ci` and `npm run build` (if build script exists)
+3. **Upload Release Assets**: It uploads the specified files to the GitHub release.
+4. **Slack Notification**: Finally, it sends a notification to Slack with the deployment details.
+
+### Alternative Behavior (GitHub Actions Build)
+If you set `use-php: true` or `use-node: true`, the action will:
+1. **Setup Environment**: Set up PHP and/or Node.js on the GitHub Actions runner.
+2. **Install Dependencies**: Install the required PHP and NPM dependencies on GitHub Actions.
+3. **Build Project**: Run the build process on GitHub Actions.
+4. **Deploy Built Files**: Deploy the built artifacts to the remote server using `rsync`.
+5. **Remote Commands**: Optionally run additional commands on the remote server.
+6. **Upload & Notify**: Upload release assets and send Slack notifications.
 
 ### Caveats
 
 - **Permissions**: Ensure that the SSH key and GitHub token have the necessary permissions to access the remote server and GitHub repository respectively.
 - **Network Configuration**: The remote server must be accessible from the GitHub Actions runner. Ensure that firewalls and security groups allow this access.
 - **Error Handling**: The action stops execution on errors (`set -eo`), which ensures that subsequent steps are not executed if a previous step fails.
-- **Dependencies**: Ensure that all dependencies (PHP extensions, Node.js modules, etc.) are correctly specified and available.
+- **Server Dependencies**: When using the default remote installation, ensure your production server has PHP, Composer, Node.js, and npm available as needed.
 
 ## Secrets
 
@@ -204,9 +211,13 @@ To add secrets to your repository:
 
 ### Continuous Integration and Continuous Deployment (CI/CD)
 
-CI/CD is a method to frequently deliver apps to customers by introducing automation into the stages of app development. The main concepts attributed to CI/CD are continuous integration, continuous delivery, and continuous deployment. This action helps implement CI/CD by automating the deployment process, ensuring that your application is
+CI/CD is a method to frequently deliver apps to customers by introducing automation into the stages of app development. The main concepts attributed to CI/CD are continuous integration, continuous delivery, and continuous deployment. This action helps implement CI/CD by automating the deployment process, ensuring that your application is always in a deployable state and that updates are delivered to users quickly and efficiently.
 
- always in a deployable state and that updates are delivered to users quickly and efficiently.
+### Cost Efficiency
+
+- **Reduced GitHub Actions Minutes**: By default, builds and dependency installation happen on your production server, saving GitHub Actions compute time.
+- **Environment Consistency**: Dependencies are installed in the actual target environment, reducing environment-related deployment issues.
+- **Optimized Resource Usage**: Your production server likely has better performance for builds than GitHub Actions runners.
 
 ### Security
 
